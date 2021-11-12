@@ -1,0 +1,8 @@
+.error {
+  color: red;
+  font-size: 0.8rem;
+  display: none;
+}
+input:invalid[focused="true"] + span {
+  display: block;
+}
