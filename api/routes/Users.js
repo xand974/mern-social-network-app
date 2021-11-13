@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 const checkToken = require("../middlewares/checkToken");
 
 //#region get user
-router.get("/one/:id", checkToken, async (req, res) => {
+router.get("/one", checkToken, async (req, res) => {
   const userId = req.query.userId;
   const username = req.query.username;
   try {
@@ -48,7 +48,7 @@ router.put("/:id", checkToken, async (req, res) => {
 //#region delete user
 router.delete("/:id", checkToken, async (req, res) => {
   try {
-    if (req.user.id != id)
+    if (req.user.id != req.params.id)
       return res
         .status(403)
         .json("vous ne pouvez pas supprimer qlq un d'autre");
@@ -69,11 +69,11 @@ router.put("/follow/:id", checkToken, async (req, res) => {
     const currentUser = await User.findById(req.user.id);
     const targetUser = await User.findById(req.params.id);
     if (
-      !currentUser.following.includes(req.params.id) &&
-      !targetUser.following.includes(req.user.id)
+      !currentUser.friends.includes(req.params.id) &&
+      !targetUser.friends.includes(req.user.id)
     ) {
-      await currentUser.update({ $set: { following: req.params.id } });
-      await targetUser.update({ $set: { following: req.user.id } });
+      await currentUser.update({ $push: { friends: req.params.id } });
+      await targetUser.update({ $push: { friends: req.user.id } });
       return res.status(200).json("vous suivez une nouvelle personne");
     }
     return res.status(403).json("vous suivez déjà cette personne");
@@ -92,11 +92,11 @@ router.put("/unfollow/:id", checkToken, async (req, res) => {
     const currentUser = await User.findById(req.user.id);
     const targetUser = await User.findById(req.params.id);
     if (
-      currentUser.following.includes(req.params.id) &&
-      targetUser.following.includes(req.user.id)
+      currentUser.friends.includes(req.params.id) &&
+      targetUser.friends.includes(req.user.id)
     ) {
-      await currentUser.update({ $pull: { following: req.params.id } });
-      await targetUser.update({ $pull: { following: req.user.id } });
+      await currentUser.update({ $pull: { friends: req.params.id } });
+      await targetUser.update({ $pull: { friends: req.user.id } });
       return res.status(200).json("vous ne suivez plus une personne");
     }
     return res.status(403).json("vous suivez déjà cette personne");
@@ -110,7 +110,12 @@ router.put("/unfollow/:id", checkToken, async (req, res) => {
 router.get("/:id/friends", checkToken, async (req, res) => {
   try {
     const friendsUser = await User.findById(req.params.id);
-    return res.status(200).send(friendsUser.following);
+    const friends = await Promise.all(
+      friendsUser.friends.map((friendId) => {
+        return User.findById(friendId);
+      })
+    );
+    return res.status(200).send(friends);
   } catch (err) {
     return res.status(500).json("something went wrong : " + err);
   }

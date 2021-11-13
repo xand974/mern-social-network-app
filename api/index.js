@@ -8,6 +8,7 @@ const morgan = require("morgan");
 const helmet = require("helmet");
 const authRoutes = require("./routes/Auth");
 const userRoutes = require("./routes/Users");
+const postRoutes = require("./routes/Posts");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -16,6 +17,7 @@ app.use(morgan("common"));
 app.use(helmet());
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/posts", postRoutes);
 
 app.listen(PORT, () => {
   console.log("app is running on port " + PORT);
