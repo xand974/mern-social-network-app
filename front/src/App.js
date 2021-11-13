@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 function App() {
   const { currentUser } = useSelector((state) => state.user);
   return (
-    <div className="App">
+    <div className=" h-screen overflow-hidden">
       <Router>
         <Routes>
           <Route

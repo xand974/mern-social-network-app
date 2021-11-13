@@ -8,18 +8,9 @@ export const loginInputs = [
     label: "Email",
     name: "email",
   },
+
   {
     id: 2,
-    type: "text",
-    placeholder: "john_doe",
-    required: true,
-    errorMessage: "votre pseudo doit comporter au moins 4 lettres",
-    label: "Pseudo",
-    pattern: "^[A-Za-z0-9]{3,16}$",
-    name: "username",
-  },
-  {
-    id: 3,
     type: "password",
     placeholder: "aze123",
     required: true,
@@ -43,6 +34,16 @@ export const registerInput = [
   },
   {
     id: 2,
+    type: "text",
+    placeholder: "john_doe",
+    required: true,
+    errorMessage: "votre pseudo doit comporter au moins 4 lettres",
+    label: "Pseudo",
+    pattern: "^[A-Za-z0-9]{3,16}$",
+    name: "username",
+  },
+  {
+    id: 3,
     type: "password",
     placeholder: "aze123",
     required: true,

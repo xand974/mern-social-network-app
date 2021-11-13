@@ -1,0 +1,6 @@
+.home {
+  height: calc(100vh - 78px);
+  width: 98%;
+  margin: 0 auto;
+  padding: 50px 4% 0 50px;
+}
