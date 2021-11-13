@@ -1,16 +1,37 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Home from "pages/Home";
+import Register from "pages/Register";
+import Login from "pages/Login";
+import PrivateRoutes from "pages/PrivateRoutes";
+import { useSelector } from "react-redux";
 
 function App() {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <div className="App">
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/Register" element={<Register />} />
+          <Route
+            path="/login"
+            element={currentUser ? <Navigate to="/" /> : <Login />}
+          />
+          <Route
+            path="/Register"
+            element={currentUser ? <Navigate to="/" /> : <Register />}
+          />
+          <Route
+            path="/"
+            element={
+              <PrivateRoutes>
+                <Home />
+              </PrivateRoutes>
+            }
+          />
         </Routes>
       </Router>
     </div>
