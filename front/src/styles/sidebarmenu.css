@@ -1,0 +1,12 @@
+.transition-menu-sidebar:hover .text-sidebar {
+  color: rgba(96, 165, 250, 1);
+}
+
+.transition-menu-sidebar:hover .icon {
+  color: rgba(96, 165, 250, 1);
+}
+
+.transition-menu-sidebar:hover {
+  border-left: 2px solid rgba(96, 165, 250, 1);
+  background: #fafafa;
+}

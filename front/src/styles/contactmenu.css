@@ -1,0 +1,37 @@
+.dropdown {
+  position: absolute;
+  right: 30px;
+  top: 0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.411);
+  padding: 10px;
+  min-width: 170px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+
+  border-radius: 20px;
+  background: #f1f1f1;
+  color: #338bff;
+  display: none;
+}
+.active {
+  pointer-events: all;
+  display: flex;
+}
+
+.dropdown button:hover {
+  text-decoration: underline;
+}
+
+.dropdown a:hover {
+  text-decoration: underline;
+}
+
+.dropdown a,
+button {
+  white-space: nowrap;
+  margin: 10px 0;
+}
+.btn-dropdown {
+  text-align: left;
+}

@@ -1,4 +1,4 @@
-import { AddBoxOutlined, Search } from "@mui/icons-material";
+import { AddBoxOutlined } from "@mui/icons-material";
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../Images/Marque.png";
@@ -6,11 +6,17 @@ import "../styles/navbar.css";
 export default function Navbar() {
   return (
     <div className=" w-full  border-b-2 h-20 bg-white ">
-      <div className="navbar flex items-center h-full w-11/12">
+      <div className="margin-x-auto flex items-center h-full w-11/12">
         <div className="flex-3 flex justify-start  items-center ">
-          <div className="img cursor-pointer">
-            <img src={logo} alt="logo" className="h-full w-full object-cover" />
-          </div>
+          <Link to="/">
+            <div className="img cursor-pointer">
+              <img
+                src={logo}
+                alt="logo"
+                className="h-full w-full object-cover"
+              />
+            </div>
+          </Link>
         </div>
         <div className="flex-2 flex items-center justify-end ">
           <form className="flex items-center ">

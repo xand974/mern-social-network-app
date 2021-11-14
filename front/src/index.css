@@ -14,8 +14,16 @@
 ::-webkit-scrollbar {
   width: 1px;
 }
-
 ::-webkit-scrollbar-thumb {
   background: black;
   border-radius: 10px;
+}
+
+.margin-x-auto {
+  margin: 0 auto;
+}
+
+.margin-left-right-auto {
+  margin-left: auto;
+  margin-right: auto;
 }
