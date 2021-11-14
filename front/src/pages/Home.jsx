@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="w-screen h-screen overflow-hidden ">
       <Navbar />
-      <div className="home flex  pt-10 bg-gray-100">
+      <div className="home flex pt-10 bg-gray-100">
         <Sidebar />
         <Feed />
         <Contact />
