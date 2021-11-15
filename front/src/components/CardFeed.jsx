@@ -48,9 +48,16 @@ export default function CardFeed({ post }) {
         <div className="flex items-center border-b-2 border-gray-100">
           <button className="mr-5" onClick={handleLike}>
             {like ? (
-              <FavoriteOutlined className="text-blue-500" fontSize="large" />
+              <div className="flex items-center">
+                <FavoriteOutlined className="text-blue-500" fontSize="large" />
+                <span>{post.likes.length}</span>
+              </div>
             ) : (
-              <FavoriteBorder className="text-gray-500" fontSize="large" />
+              <div className="flex items-center">
+                <FavoriteBorder className="text-gray-500" fontSize="large" />
+
+                <span>{post.likes.length}</span>
+              </div>
             )}
           </button>
           <button onClick={() => setCommentsActive(true)}>

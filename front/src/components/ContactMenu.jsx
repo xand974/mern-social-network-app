@@ -32,8 +32,11 @@ export default function ContactMenu() {
   const [active, setActive] = useState(false);
   return (
     <div className="bg-white w-10/12 rounded-lg margin-left-right-auto  py-1 shadow-sm">
-      {friends.map((friend) => (
-        <div className="flex items-center justify-between py-2 transition-all px-10 cursor-pointer hover:bg-blue-200">
+      {friends.map((friend, key) => (
+        <div
+          className="flex items-center justify-between py-2 transition-all px-10 cursor-pointer hover:bg-blue-200"
+          key={key}
+        >
           <Link to={`/profile/${friend.id}`} key={friend.id}>
             <div className="flex items-center">
               <img

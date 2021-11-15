@@ -26,8 +26,8 @@ export default function SidebarMenu() {
   ];
   return (
     <div className="bg-white w-10/12 rounded-lg margin-left-right-auto  mt-12 py-1 shadow-sm">
-      {menuItems.map((item) => (
-        <Link to={item.link}>
+      {menuItems.map((item, key) => (
+        <Link to={item.link} key={key}>
           <div
             className="transition-menu-sidebar flex items-center justify-between py-5 transition-all px-10 border-b-2 border-gray-100 cursor-pointer"
             key={item.id}

@@ -1,7 +1,9 @@
 import { AutoAwesomeOutlined } from "@mui/icons-material";
 import React from "react";
+import { useSelector } from "react-redux";
 
 export default function PostFeed() {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <div className="bg-white shadow-lg p-5 flex items-center rounded-lg mb-11">
       <div className="flex items-center flex-1">
@@ -12,7 +14,7 @@ export default function PostFeed() {
         />
         <input
           type="text"
-          placeholder="Quoi de neuf , Malet ?"
+          placeholder={`Quoi de neuf, ${currentUser.user.username} ?`}
           className="w-full outline-none placeholder-gray-500 "
         />
       </div>
