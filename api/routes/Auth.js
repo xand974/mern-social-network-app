@@ -5,15 +5,17 @@ const User = require("../models/User");
 
 router.post("/register", async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const userFound = await User.findOne({ username });
+    const { email, password, fullName, username } = req.body;
+    const userFound = await User.findOne({ email });
     userFound && res.status(401).json("vous avez déjà un compte");
 
     const salt = await bcrypt.genSalt(10);
     const newPass = await bcrypt.hash(password, salt);
     var user = new User({
-      username,
+      email,
       password: newPass,
+      fullName,
+      username,
     });
 
     const newUser = await user.save();
@@ -26,8 +28,8 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const { username, password } = req.body;
-    const userFound = await User.findOne({ username });
+    const { email, password } = req.body;
+    const userFound = await User.findOne({ email });
 
     !userFound && res.status(401).json("vous n'avez pas encore de compte");
 
