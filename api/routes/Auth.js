@@ -31,17 +31,15 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
     const userFound = await User.findOne({ email });
 
-    !userFound && res.status(401).json("vous n'avez pas encore de compte");
-
     const isMatched = await bcrypt.compare(password, userFound.password);
     if (isMatched) {
       const accessToken = generateAccessToken(userFound);
-      return res.status(200).json({ user: userFound, accessToken });
+      res.status(200).json({ user: userFound, accessToken });
     } else {
-      return res.status(401).json("mot de passe ou identifiant incorrecte");
+      res.status(401).json("mot de passe ou identifiant incorrecte");
     }
   } catch (err) {
-    return res.status(500).json(err);
+    res.status(500).json("err" + err);
   }
 });
 
