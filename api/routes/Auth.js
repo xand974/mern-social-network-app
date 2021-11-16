@@ -33,8 +33,9 @@ router.post("/login", async (req, res) => {
 
     const isMatched = await bcrypt.compare(password, userFound.password);
     if (isMatched) {
+      const { password, ...rest } = userFound._doc;
       const accessToken = generateAccessToken(userFound);
-      res.status(200).json({ user: userFound, accessToken });
+      res.status(200).json({ user: rest, accessToken });
     } else {
       res.status(401).json("mot de passe ou identifiant incorrecte");
     }

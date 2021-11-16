@@ -1,5 +1,5 @@
-import { Logout } from "@mui/icons-material";
-import React from "react";
+import { Logout, SearchOutlined } from "@mui/icons-material";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "redux/apiCalls";
@@ -8,6 +8,11 @@ import "../styles/navbar.css";
 export default function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [userInput, setUserInput] = useState("");
+
+  const handleSearch = () => {
+    navigate(`/search?search_query=${userInput}`);
+  };
   return (
     <div className=" w-full  border-b-2 h-20 bg-white ">
       <div className="margin-x-auto flex items-center h-full w-11/12">
@@ -23,12 +28,24 @@ export default function Navbar() {
           </Link>
         </div>
         <div className="flex-2 flex items-center justify-end ">
-          <form className="flex items-center ">
+          <form
+            className="flex items-center relative"
+            onSubmit={(e) => e.preventDefault()}
+          >
             <input
               type="text"
-              placeholder="search"
+              placeholder="rechercher un post, une personne,.."
               className="bg-gray-100 text-gray-500 w-full outline-none p-2 pl-5 rounded-lg"
+              onChange={(e) => setUserInput(e.target.value)}
             />
+            <button
+              className={`${
+                userInput.length > 0 ? "nav__search-btn" : ""
+              } transition-all absolute right-0 bg-white text-sm px-2 py-1 rounded-full  translate-x-10 hidden`}
+              onClick={handleSearch}
+            >
+              <SearchOutlined />
+            </button>
           </form>
           <button
             onClick={() => {

@@ -10,6 +10,7 @@ import PrivateRoutes from "pages/PrivateRoutes";
 import { useSelector } from "react-redux";
 import Profile from "pages/Profile";
 import Home from "pages/Home";
+import Search from "pages/Search";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -38,6 +39,14 @@ function App() {
             element={
               <PrivateRoutes>
                 <Profile />
+              </PrivateRoutes>
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <PrivateRoutes>
+                <Search />
               </PrivateRoutes>
             }
           />

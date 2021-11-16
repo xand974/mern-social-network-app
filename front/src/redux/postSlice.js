@@ -9,6 +9,12 @@ export const postSlice = createSlice({
     error: false,
   },
   reducers: {
+    likePost: (state, action) => {
+      state.timelinePost
+        .find((post) => post._id === action.payload.postId)
+        .push(action.payload.userId);
+    },
+    dilikePost: (state, action) => {},
     getTimelineStart: (state) => {
       state.pending = true;
     },
@@ -33,6 +39,17 @@ export const postSlice = createSlice({
       state.pending = false;
       state.error = true;
     },
+    createPostStart: (state) => {
+      state.pending = true;
+    },
+    createPostSuccess: (state, action) => {
+      state.pending = false;
+      state.timelinePost.push(action.payload);
+    },
+    createPostFailure: (state) => {
+      state.pending = false;
+      state.error = true;
+    },
   },
 });
 export default postSlice.reducer;
@@ -43,4 +60,8 @@ export const {
   getUserPostsFailure,
   getUserPostsStart,
   getUserPostsSuccess,
+  createPostFailure,
+  createPostStart,
+  createPostSuccess,
+  likePost,
 } = postSlice.actions;

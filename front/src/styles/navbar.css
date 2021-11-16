@@ -2,3 +2,8 @@
   width: 100px;
   height: 40px;
 }
+
+.nav__search-btn {
+  display: inherit;
+  transform: translateX(0);
+}

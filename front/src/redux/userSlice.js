@@ -6,6 +6,7 @@ export const userSlice = createSlice({
     currentUser: null || JSON.parse(localStorage.getItem("user")),
     pending: false,
     error: false,
+    searchUsers: [],
   },
   reducers: {
     loginStart: (state) => {
@@ -40,6 +41,18 @@ export const userSlice = createSlice({
       state.error = true;
       state.pending = false;
     },
+    getSearchUsersStart: (state) => {
+      state.pending = true;
+    },
+
+    getSearchUsersSuccess: (state, action) => {
+      state.pending = true;
+      state.searchUsers = action.payload;
+    },
+    getSearchUsersFailure: (state) => {
+      state.pending = false;
+      state.error = true;
+    },
   },
 });
 
@@ -54,4 +67,7 @@ export const {
   logoutSuccess,
   logoutFailure,
   logoutStart,
+  getSearchUsersFailure,
+  getSearchUsersStart,
+  getSearchUsersSuccess,
 } = userSlice.actions;

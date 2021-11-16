@@ -7,6 +7,7 @@ const checkToken = require("../middlewares/checkToken");
 router.post("/add", checkToken, async (req, res) => {
   try {
     const post = new Post(req.body);
+    await post.save();
     return res.status(200).json(post);
   } catch (error) {
     return res.status(500).json(error);
@@ -14,7 +15,7 @@ router.post("/add", checkToken, async (req, res) => {
 });
 //#endregion
 
-// #region all posts
+// #region all user posts
 router.get("/all", checkToken, async (req, res) => {
   try {
     const posts = await Post.find({ userId: req.user.id });
@@ -80,4 +81,5 @@ router.delete("/:id", checkToken, async (req, res) => {
   }
 });
 //#endregion
+
 module.exports = router;

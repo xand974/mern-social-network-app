@@ -122,4 +122,16 @@ router.get("/:id/friends", checkToken, async (req, res) => {
 });
 //#endregion
 
+//#region search users
+router.get("/search", checkToken, async (req, res) => {
+  try {
+    const searchQuery = req.query.search_query;
+    const users = await User.find({ $text: { $search: searchQuery } });
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+//#endregion
+
 module.exports = router;

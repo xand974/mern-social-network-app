@@ -8,7 +8,7 @@ export default function UserCard() {
       <div className="">
         <img
           className="w-16 h-16 rounded-lg mr-5"
-          src="https://images.unsplash.com/photo-1603102796296-9c152db1ba32?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1332&q=80"
+          src={currentUser.user.profilePicture}
           alt=""
         />
       </div>

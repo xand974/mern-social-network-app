@@ -23,6 +23,12 @@ export default function SidebarMenu() {
       icon: "NotificationsOutlined",
       link: "/notifications",
     },
+    {
+      id: 5,
+      name: "Messages",
+      icon: "MessageOutlined",
+      link: "/messages",
+    },
   ];
   return (
     <div className="bg-white w-10/12 rounded-lg margin-left-right-auto  mt-12 py-1 shadow-sm">

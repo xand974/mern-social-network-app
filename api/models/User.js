@@ -42,17 +42,19 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    description: String,
+    bio: String,
     city: String,
     from: String,
     relationship: {
       type: String,
-      EnCouple: "en couple",
-      Celibataire: "célibataire",
+      EnCouple: "En couple",
+      Celibataire: "Célibataire",
       Marié: "Marié",
     },
   },
   { timestamps: true }
 );
+
+userSchema.index({ username: "text" });
 
 module.exports = new mongoose.model("User", userSchema);

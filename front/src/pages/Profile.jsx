@@ -19,7 +19,7 @@ export default function Profile() {
           <CardFeed post={post} key={key} />
         ))}
       </div>
-      <div className="flex-1">
+      <div className="flex-1 overflow-y-scroll">
         <ProfileInfos />
         <Contact />
       </div>
