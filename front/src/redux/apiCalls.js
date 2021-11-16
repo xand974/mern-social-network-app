@@ -16,7 +16,7 @@ export const login = async (credentials, dispatch, navigate) => {
   try {
     const res = await openRequest.post("/auth/login", credentials);
     dispatch(loginSuccess(res.data));
-    localStorage.setItem("user", JSON.stringify(res.data.accessToken));
+    localStorage.setItem("user", JSON.stringify(res.data));
     navigate("/");
   } catch (error) {
     dispatch(loginFailure());

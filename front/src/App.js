@@ -4,12 +4,12 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import Home from "pages/Home";
 import Register from "pages/Register";
 import Login from "pages/Login";
 import PrivateRoutes from "pages/PrivateRoutes";
 import { useSelector } from "react-redux";
 import Profile from "pages/Profile";
+import Home from "pages/Home";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
