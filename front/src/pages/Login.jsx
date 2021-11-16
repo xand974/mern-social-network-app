@@ -20,8 +20,6 @@ export default function Login() {
     });
   };
 
-  console.log(userInput);
-
   return (
     <div className="login-background h-screen w-screen overflow-hidden flex justify-center items-center ">
       <form

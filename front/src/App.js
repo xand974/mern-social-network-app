@@ -9,10 +9,10 @@ import Register from "pages/Register";
 import Login from "pages/Login";
 import PrivateRoutes from "pages/PrivateRoutes";
 import { useSelector } from "react-redux";
+import Profile from "pages/Profile";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
-  console.log(currentUser);
   return (
     <div className=" h-screen overflow-hidden">
       <Router>
@@ -30,6 +30,14 @@ function App() {
             element={
               <PrivateRoutes>
                 <Home />
+              </PrivateRoutes>
+            }
+          />
+          <Route
+            path="/profile/:id"
+            element={
+              <PrivateRoutes>
+                <Profile />
               </PrivateRoutes>
             }
           />
