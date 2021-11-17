@@ -44,9 +44,9 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    bio: String,
-    city: String,
-    from: String,
+    bio: { type: String, default: "J'aime les pommes" },
+    city: { type: String, default: "Quelque part dans le monde" },
+    from: { type: String, default: "Quelque part dans le monde" },
     relationship: {
       type: String,
       EnCouple: "En couple",
