@@ -1,46 +1,38 @@
+import { privateRequest } from "helpers/axios";
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
+import { getUser } from "redux/apiCalls";
 import "../styles/contactmenu.css";
-const friends = [
-  {
-    id: 34541,
-    username: "Amanda Miles",
-    img: "https://images.unsplash.com/photo-1636908681421-bff3b85f7303?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=387&q=80",
-    notification: 5,
-  },
 
-  {
-    id: 34834,
-    username: "Melissa Byron",
-    img: "https://images.unsplash.com/photo-1636896749622-45cfa36c20e4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80",
-  },
-  {
-    id: 3153153,
-    username: "Amanda Miles",
-    img: "https://images.unsplash.com/photo-1636889864559-39d71fe1dda7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=387&q=80",
-    notification: 7,
-  },
-  {
-    id: 6334,
-    username: "Simon alet",
-    img: "https://images.unsplash.com/photo-1633113215883-a43e36bc6178?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=387&q=80",
-    notification: 7,
-  },
-];
+export default function ContactMenu({ friends }) {
+  const [friendsInfos, setFriendsInfos] = useState([]);
 
-export default function ContactMenu() {
+  useEffect(() => {
+    const fetchFriendInfos = async () => {
+      const friendArray = await Promise.all(
+        friends.map((friendId) => {
+          return privateRequest.get(`/users/one?userId=${friendId}`);
+        })
+      );
+      setFriendsInfos(friendArray.map((a) => a.data));
+    };
+
+    fetchFriendInfos();
+  }, [friends]);
+
   const [active, setActive] = useState(false);
   return (
     <div className="bg-white w-10/12 rounded-lg margin-left-right-auto  py-1 shadow-sm">
-      {friends.map((friend, key) => (
+      {friendsInfos.map((friend, key) => (
         <div
-          className="flex items-center justify-between py-2 transition-all px-10 cursor-pointer hover:bg-blue-200"
+          className="flex items-center justify-between py-2 transition-all px-10 cursor-pointer rounded-lg hover:bg-blue-200"
           key={key}
         >
-          <Link to={`/profile/${friend.id}`} key={friend.id}>
+          <Link to={`/profile/${friend._id}`} key={friend._id}>
             <div className="flex items-center">
               <img
-                src={friend.img}
+                src={friend.profilePicture}
                 alt=""
                 className="w-12 h-14 rounded-lg mr-5 object-cover"
               />

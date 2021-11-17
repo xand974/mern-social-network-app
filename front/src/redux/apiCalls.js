@@ -6,10 +6,11 @@ import {
   getTimelineFailure,
   getTimelineStart,
   getTimelineSuccess,
-  getUserPostsFailure,
-  getUserPostsStart,
-  getUserPostsSuccess,
+  getCurrentUserPostsFailure,
+  getCurrentUserPostsStart,
+  getCurrentUserPostsSuccess,
   likePost,
+  logoutPosts,
 } from "./postSlice";
 import {
   loginStart,
@@ -24,6 +25,15 @@ import {
   getSearchUsersStart,
   getSearchUsersSuccess,
   getSearchUsersFailure,
+  getUserFriendsStart,
+  getUserFriendsSuccess,
+  getUserFriendsFailure,
+  addFriendFailure,
+  addFriendStart,
+  addFriendSuccess,
+  removeFriendFailure,
+  removeFriendStart,
+  removeFriendSuccess,
 } from "./userSlice";
 
 //#region login and register
@@ -54,6 +64,7 @@ export const logout = (dispatch, navigate) => {
   dispatch(logoutStart());
   try {
     dispatch(logoutSuccess());
+    dispatch(logoutPosts());
     localStorage.removeItem("user");
     navigate("/login");
   } catch (error) {
@@ -106,12 +117,21 @@ export const dislike = (dispatch) => {
 
 //get all current user's posts
 export const getCurrentUserPosts = async (dispatch) => {
-  dispatch(getUserPostsStart());
+  dispatch(getCurrentUserPostsStart());
   try {
     const res = await privateRequest.get("/posts/all");
-    dispatch(getUserPostsSuccess(res.data));
+    dispatch(getCurrentUserPostsSuccess(res.data));
   } catch (error) {
-    dispatch(getUserPostsFailure());
+    dispatch(getCurrentUserPostsFailure());
+  }
+};
+
+export const getProfileUserPosts = async (userId, setPosts) => {
+  try {
+    const res = await privateRequest.get("/posts/all/" + userId);
+    setPosts(res.data);
+  } catch (error) {
+    console.log(error);
   }
 };
 
@@ -138,6 +158,34 @@ export const getUser = async (userId, setUser) => {
     setUser(res.data);
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const getUserFriends = async (dispatch, userId) => {
+  dispatch(getUserFriendsStart());
+  try {
+    const res = await privateRequest.get(`/users/${userId}/friends`);
+    dispatch(getUserFriendsSuccess(res.data));
+  } catch (error) {
+    dispatch(getUserFriendsFailure());
+  }
+};
+export const addFriend = async (dispatch, userId) => {
+  dispatch(addFriendStart());
+  try {
+    await privateRequest.put("/users/follow/" + userId, userId);
+    dispatch(addFriendSuccess(userId));
+  } catch (error) {
+    dispatch(addFriendFailure());
+  }
+};
+export const removeFriend = async (dispatch, userId) => {
+  dispatch(removeFriendStart());
+  try {
+    await privateRequest.put("/users/follow/" + userId, userId);
+    dispatch(removeFriendSuccess(userId));
+  } catch (error) {
+    dispatch(removeFriendFailure());
   }
 };
 //#endregion

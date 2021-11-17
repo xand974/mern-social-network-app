@@ -109,13 +109,8 @@ router.put("/unfollow/:id", checkToken, async (req, res) => {
 //#region get user friend
 router.get("/:id/friends", checkToken, async (req, res) => {
   try {
-    const friendsUser = await User.findById(req.params.id);
-    const friends = await Promise.all(
-      friendsUser.friends.map((friendId) => {
-        return User.findById(friendId);
-      })
-    );
-    return res.status(200).send(friends);
+    const user = await User.findById(req.params.id);
+    return res.status(200).send(user.friends);
   } catch (err) {
     return res.status(500).json("something went wrong : " + err);
   }

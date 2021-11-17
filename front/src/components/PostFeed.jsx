@@ -16,7 +16,7 @@ export default function PostFeed() {
   return (
     <div className="bg-white shadow-lg p-5 flex items-center rounded-lg mb-11">
       <img
-        src="https://images.unsplash.com/photo-1636912305077-eb89d5ede5b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=387&q=80"
+        src={currentUser.user.profilePicture}
         alt="photoURL of the user"
         className="w-16 h-10 rounded-lg object-cover mr-5"
       />

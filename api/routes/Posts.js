@@ -15,7 +15,19 @@ router.post("/add", checkToken, async (req, res) => {
 });
 //#endregion
 
-// #region all user posts
+//#region get all user posts
+router.get("/all/:id", async (req, res) => {
+  try {
+    const posts = await Post.find({ userId: req.params.id });
+    return res.status(200).json(posts);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+//#endregion
+
+// #region all current user posts
 router.get("/all", checkToken, async (req, res) => {
   try {
     const posts = await Post.find({ userId: req.user.id });
@@ -39,7 +51,7 @@ router.get("/feed", checkToken, async (req, res) => {
     );
     return res.status(200).json(userPosts.concat(...friendsPosts));
   } catch (error) {
-    return res.status(500).json(error);
+    return res.status(500).json("error" + error);
   }
 });
 //#endregion

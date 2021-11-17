@@ -14,7 +14,7 @@ export const postSlice = createSlice({
         .find((post) => post._id === action.payload.postId)
         .push(action.payload.userId);
     },
-    dilikePost: (state, action) => {},
+    dislikePost: (state, action) => {},
     getTimelineStart: (state) => {
       state.pending = true;
     },
@@ -27,15 +27,15 @@ export const postSlice = createSlice({
       state.pending = false;
       state.error = true;
     },
-    getUserPostsStart: (state) => {
+    getCurrentUserPostsStart: (state) => {
       state.pending = true;
     },
 
-    getUserPostsSuccess: (state, action) => {
+    getCurrentUserPostsSuccess: (state, action) => {
       state.pending = true;
       state.userPosts = action.payload;
     },
-    getUserPostsFailure: (state) => {
+    getCurrentUserPostsFailure: (state) => {
       state.pending = false;
       state.error = true;
     },
@@ -50,6 +50,9 @@ export const postSlice = createSlice({
       state.pending = false;
       state.error = true;
     },
+    logoutPosts: (state) => {
+      state.timelinePost = [];
+    },
   },
 });
 export default postSlice.reducer;
@@ -57,11 +60,12 @@ export const {
   getTimelineFailure,
   getTimelineStart,
   getTimelineSuccess,
-  getUserPostsFailure,
-  getUserPostsStart,
-  getUserPostsSuccess,
+  getCurrentUserPostsFailure,
+  getCurrentUserPostsStart,
+  getCurrentUserPostsSuccess,
   createPostFailure,
   createPostStart,
   createPostSuccess,
   likePost,
+  logoutPosts,
 } = postSlice.actions;

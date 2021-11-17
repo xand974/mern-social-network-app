@@ -7,10 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Feed() {
   const dispatch = useDispatch();
   const { timelinePost } = useSelector((state) => state.posts);
+  const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
-    getTimeLine(dispatch);
-  }, [dispatch]);
+    currentUser && getTimeLine(dispatch);
+  }, [dispatch, currentUser]);
 
   return (
     <div className="flex-2 h-full overflow-y-scroll ">

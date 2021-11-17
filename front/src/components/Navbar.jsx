@@ -1,6 +1,6 @@
 import { Logout, SearchOutlined } from "@mui/icons-material";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { logout } from "redux/apiCalls";
 import logo from "../Images/Marque.png";
@@ -9,6 +9,7 @@ export default function Navbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userInput, setUserInput] = useState("");
+  const { currentUser } = useSelector((state) => state.user);
 
   const handleSearch = () => {
     navigate(`/search?search_query=${userInput}`);
@@ -57,11 +58,13 @@ export default function Navbar() {
               <Logout className="mr-2" /> Logout
             </span>
           </button>
-          <img
-            className="h-10 w-10 object-cover rounded-xl ml-10"
-            src="https://images.unsplash.com/photo-1633113216164-6469037eafa5?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=387&q=80"
-            alt=""
-          />
+          <Link to="/update">
+            <img
+              className="h-10 w-10 object-cover rounded-xl ml-10"
+              src={currentUser.user.profilePicture}
+              alt=""
+            />
+          </Link>
         </div>
       </div>
     </div>

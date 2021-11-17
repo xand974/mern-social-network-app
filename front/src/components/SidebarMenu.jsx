@@ -2,18 +2,17 @@ import React from "react";
 import { Link } from "react-router-dom";
 import DynamicIcon from "./DynamicIcon";
 import "../styles/sidebarmenu.css";
+import { useSelector } from "react-redux";
 
 export default function SidebarMenu() {
-  const user = {
-    id: "45465464",
-  };
+  const { currentUser } = useSelector((state) => state.user);
   const menuItems = [
     { id: 1, name: "Home", icon: "HomeOutlined", link: "/", notifications: 3 },
     {
       id: 2,
       name: "Profile",
       icon: "PersonOutlined",
-      link: `/profile/${user.id}`,
+      link: `/profile/${currentUser.user._id}`,
       notifications: 2,
     },
     { id: 3, name: "Settings", icon: "SettingsOutlined", link: "/settings" },

@@ -11,7 +11,7 @@ export default function CardFeed({ post }) {
   const [likeCount, setLikeCount] = useState(post.likes.length);
   const { currentUser } = useSelector((state) => state.user);
   const [userPost, setUserPost] = useState({});
-
+  const date = new Date(post.createdAt).toLocaleDateString("fr-FR");
   useEffect(() => {
     setLike(post.likes.includes(currentUser._id));
   }, [currentUser._id, post.likes]);
@@ -40,7 +40,7 @@ export default function CardFeed({ post }) {
           </Link>
           <div className="">
             <p className="text-blue-400 font-semibold">{userPost?.username}</p>
-            <p className="text-gray-400">2 hours ago</p>
+            <p className="text-gray-400">{date}</p>
           </div>
         </div>
         <div className="dropdown-card flex items-center relative">
