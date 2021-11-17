@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 export default function ProfileInfos({ user }) {
   const date = new Date(user.createdAt).toLocaleDateString("fr-FR");
@@ -23,11 +23,15 @@ export default function ProfileInfos({ user }) {
         </div>
         <div className="flex items-center">
           <span className="font-bold flex-1 my-2 text-gray-500">Ville :</span>
-          <span className="font-light">{user.city}</span>
+          <span className="font-light  w-40 whitespace-nowrap overflow-hidden overflow-ellipsis">
+            {user.city}
+          </span>
         </div>
         <div className="flex items-center">
-          <span className="font-bold flex-1 my-2 text-gray-500">de :</span>
-          <span className="font-light">{user.from}</span>
+          <span className="font-bold flex-1 my-2 text-gray-500 ">de :</span>
+          <span className="font-light w-40 whitespace-nowrap overflow-hidden overflow-ellipsis">
+            {user.from}
+          </span>
         </div>
         <div className="flex items-center">
           <span className="font-bold flex-1 my-2 text-gray-500">crée le :</span>

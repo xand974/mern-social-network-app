@@ -28,12 +28,8 @@ import {
   getUserFriendsStart,
   getUserFriendsSuccess,
   getUserFriendsFailure,
-  addFriendFailure,
-  addFriendStart,
-  addFriendSuccess,
-  removeFriendFailure,
-  removeFriendStart,
-  removeFriendSuccess,
+  addFriend,
+  removeFriend,
 } from "./userSlice";
 
 //#region login and register
@@ -170,22 +166,20 @@ export const getUserFriends = async (dispatch, userId) => {
     dispatch(getUserFriendsFailure());
   }
 };
-export const addFriend = async (dispatch, userId) => {
-  dispatch(addFriendStart());
+export const handleAddFriend = async (dispatch, userId) => {
   try {
     await privateRequest.put("/users/follow/" + userId, userId);
-    dispatch(addFriendSuccess(userId));
+    dispatch(addFriend(userId));
   } catch (error) {
-    dispatch(addFriendFailure());
+    console.log(error);
   }
 };
-export const removeFriend = async (dispatch, userId) => {
-  dispatch(removeFriendStart());
+export const handleRemoveFriend = async (dispatch, userId) => {
   try {
     await privateRequest.put("/users/follow/" + userId, userId);
-    dispatch(removeFriendSuccess(userId));
+    dispatch(removeFriend(userId));
   } catch (error) {
-    dispatch(removeFriendFailure());
+    console.log(error);
   }
 };
 //#endregion

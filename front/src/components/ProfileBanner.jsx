@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addFriend, removeFriend } from "redux/apiCalls";
+import { handleAddFriend, handleRemoveFriend } from "redux/apiCalls";
 import "../styles/profilebanner.css";
 export default function ProfileBanner({
   bio,
@@ -42,11 +42,11 @@ export default function ProfileBanner({
         {currentUser.user._id !== id && (
           <div className="profile__banner-button absolute right-4 px-4 py-1 bg-black text-white rounded-lg shadow-md -bottom-16 ">
             {isFriend ? (
-              <button onClick={() => removeFriend(dispatch, id)}>
+              <button onClick={() => handleRemoveFriend(dispatch, id)}>
                 Supprimer <Remove />
               </button>
             ) : (
-              <button onClick={() => addFriend(dispatch, id)}>
+              <button onClick={() => handleAddFriend(dispatch, id)}>
                 Ajouter <Add />
               </button>
             )}

@@ -2,7 +2,6 @@ import { privateRequest } from "helpers/axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { getUser } from "redux/apiCalls";
 import "../styles/contactmenu.css";
 
 export default function ContactMenu({ friends }) {
