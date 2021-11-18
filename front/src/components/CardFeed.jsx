@@ -70,10 +70,25 @@ export default function CardFeed({ post }) {
               <span className="text-gray-500">{likeCount}</span>
             </div>
           </button>
-          <button onClick={() => setCommentsActive(true)}>
+          <button
+            onClick={() =>
+              setCommentsActive((commentsActive = !commentsActive))
+            }
+          >
             <CommentOutlined className="text-gray-500" fontSize="large" />
           </button>
         </div>
+        {commentsActive && (
+          <form className="flex items-center">
+            <input
+              type="text"
+              className="border-b-2 p-2 w-full my-10 outline-none"
+            />
+            <button className="p-2 border-2 border-blue-400 text-blue-400 rounded-lg">
+              commenter
+            </button>
+          </form>
+        )}
         <div className="flex flex-col">
           <button
             className="text-gray-400"
@@ -83,6 +98,7 @@ export default function CardFeed({ post }) {
           >
             Afficher les commentaires
           </button>
+
           {commentsActive && (
             <div className="flex">
               <div className="flex flex-col w-full">
