@@ -56,8 +56,23 @@ router.get("/feed", checkToken, async (req, res) => {
 });
 //#endregion
 
+router.put("/like/:postId", async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+    if (!post.likes.includes(req.body.userId)) {
+      await post.updateOne({ $push: { likes: req.body.userId } });
+      return res.status(200).json("post liked");
+    } else {
+      await post.updateOne({ $pull: { likes: req.body.userId } });
+      return res.status(200).json("post disliked");
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 // #region update
-router.put("/:id", checkToken, async (req, res) => {
+router.put("/one/:id", checkToken, async (req, res) => {
   try {
     if (req.body.id === req.user.id) {
       await Post.findByIdAndUpdate(

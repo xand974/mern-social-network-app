@@ -9,7 +9,6 @@ import {
   getCurrentUserPostsFailure,
   getCurrentUserPostsStart,
   getCurrentUserPostsSuccess,
-  likePost,
   logoutPosts,
 } from "./postSlice";
 import {
@@ -94,23 +93,6 @@ export const getTimeLine = async (dispatch) => {
   }
 };
 
-export const like = async (dispatch) => {
-  try {
-    //request
-    dispatch(likePost());
-  } catch (error) {
-    console.log(error);
-  }
-};
-export const dislike = (dispatch) => {
-  try {
-    //request
-    dispatch();
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 //get all current user's posts
 export const getCurrentUserPosts = async (dispatch) => {
   dispatch(getCurrentUserPostsStart());
@@ -130,7 +112,13 @@ export const getProfileUserPosts = async (userId, setPosts) => {
     console.log(error);
   }
 };
-
+export const like = async (userId, postId) => {
+  try {
+    await privateRequest.put("/posts/like/" + postId, { userId });
+  } catch (error) {
+    console.log(error);
+  }
+};
 //#endregion
 
 //#region user crud op
@@ -176,7 +164,7 @@ export const handleAddFriend = async (dispatch, userId) => {
 };
 export const handleRemoveFriend = async (dispatch, userId) => {
   try {
-    await privateRequest.put("/users/follow/" + userId, userId);
+    await privateRequest.put("/users/unfollow/" + userId, userId);
     dispatch(removeFriend(userId));
   } catch (error) {
     console.log(error);

@@ -9,12 +9,6 @@ export const postSlice = createSlice({
     error: false,
   },
   reducers: {
-    likePost: (state, action) => {
-      state.timelinePost
-        .find((post) => post._id === action.payload.postId)
-        .push(action.payload.userId);
-    },
-    dislikePost: (state, action) => {},
     getTimelineStart: (state) => {
       state.pending = true;
     },
@@ -66,6 +60,5 @@ export const {
   createPostFailure,
   createPostStart,
   createPostSuccess,
-  likePost,
   logoutPosts,
 } = postSlice.actions;

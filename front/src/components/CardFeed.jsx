@@ -2,24 +2,24 @@ import { CommentOutlined, FavoriteBorder } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getUser } from "redux/apiCalls";
+import { getUser, like as likePost } from "redux/apiCalls";
 import Comment from "./Comment";
 
 export default function CardFeed({ post }) {
   var [commentsActive, setCommentsActive] = useState(false);
-  var [like, setLike] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likes.length);
   const { currentUser } = useSelector((state) => state.user);
   const [userPost, setUserPost] = useState({});
   const date = new Date(post.createdAt).toLocaleDateString("fr-FR");
+  var [like, setLike] = useState(post.likes.includes(currentUser._id));
   useEffect(() => {
-    setLike(post.likes.includes(currentUser._id));
-  }, [currentUser._id, post.likes]);
+    setLike(post.likes.includes(currentUser.user._id));
+  }, [currentUser.user._id, post.likes]);
+
   const handleLike = async () => {
     setLike((like = !like));
     setLikeCount(like ? likeCount + 1 : likeCount - 1);
-
-    //like()
+    likePost(currentUser.user._id, post._id);
   };
 
   useEffect(() => {

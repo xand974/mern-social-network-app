@@ -16,8 +16,6 @@ export default function ProfileBanner({
   const [isFriend, setIsFriend] = useState(
     currentUser.user.friends.includes(id)
   );
-
-  console.log(currentUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -40,17 +38,25 @@ export default function ProfileBanner({
           />
         </div>
         {currentUser.user._id !== id && (
-          <div className="profile__banner-button absolute right-4 px-4 py-1 bg-black text-white rounded-lg shadow-md -bottom-16 ">
+          <>
             {isFriend ? (
-              <button onClick={() => handleRemoveFriend(dispatch, id)}>
-                Supprimer <Remove />
-              </button>
+              <div className="profile__banner-button absolute right-4 px-4 py-1 bg-black text-white rounded-lg shadow-md -bottom-16 ">
+                <button
+                  onClick={() => {
+                    handleRemoveFriend(dispatch, id);
+                  }}
+                >
+                  Supprimer <Remove />
+                </button>
+              </div>
             ) : (
-              <button onClick={() => handleAddFriend(dispatch, id)}>
-                Ajouter <Add />
-              </button>
+              <div className="profile__banner-button absolute right-4 px-4 py-1 bg-black text-white rounded-lg shadow-md -bottom-16 ">
+                <button onClick={() => handleAddFriend(dispatch, id)}>
+                  Ajouter <Add />
+                </button>
+              </div>
             )}
-          </div>
+          </>
         )}
       </div>
       <div className="mt-12 w-8/12 margin-left-right-auto">

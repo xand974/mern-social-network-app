@@ -72,8 +72,8 @@ export const userSlice = createSlice({
         action.payload,
       ];
     },
-    removeFriendSuccess: (state, action) => {
-      state.currentUser.user.filter((friendId) => friendId !== action.payload);
+    removeFriend: (state, action) => {
+      state.currentUser.user.friends.filter((u) => u !== action.payload);
     },
   },
 });
