@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { loginInputs } from "../helpers/inputs";
+import { loginInputs } from "../helpers/data";
 import FormInput from "../components/FormInput";
 import "../styles/register.css";
 import { Link, useNavigate } from "react-router-dom";

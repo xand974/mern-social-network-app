@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
+import { getUser } from "redux/apiCalls";
 
 export default function Comment({ item }) {
+  const [userComment, setUserComment] = useState({});
+
+  useEffect(() => {
+    getUser(item.userId, setUserComment);
+  }, [item.userId]);
   return (
     <div className="flex items-center my-5 justify-between w-full ">
       <img
-        src="https://images.unsplash.com/photo-1633114074431-746f5b25ec85?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=387&q=80"
+        src={userComment.profilePicture}
         alt=""
         className="w-16 h-11 rounded-lg object-cover mr-5"
       />
       <div className=" flex-1">
-        <p>Morgane Lartin</p>
+        <p>{userComment.username}</p>
         <p className=" whitespace-wrap overflow-hidden text-blue-500 text-sm mr-5">
-          {item.body}
+          {item.comment}
         </p>
       </div>
       <div className="">

@@ -6,11 +6,10 @@ import { createPost } from "redux/apiCalls";
 export default function PostFeed() {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const [newPost, setNewPost] = useState();
+  const [newPost, setNewPost] = useState("");
 
   const handleClick = () => {
     createPost({ content: newPost, userId: currentUser.user._id }, dispatch);
-    setNewPost("");
   };
 
   return (

@@ -7,13 +7,13 @@ import { useSelector } from "react-redux";
 export default function SidebarMenu() {
   const { currentUser } = useSelector((state) => state.user);
   const menuItems = [
-    { id: 1, name: "Home", icon: "HomeOutlined", link: "/", notifications: 3 },
+    { id: 1, name: "Home", icon: "HomeOutlined", link: "/", notifications: 0 },
     {
       id: 2,
       name: "Profile",
       icon: "PersonOutlined",
       link: `/profile/${currentUser.user._id}`,
-      notifications: 2,
+      notifications: 0,
     },
     { id: 3, name: "Settings", icon: "SettingsOutlined", link: "/settings" },
     {
@@ -43,7 +43,7 @@ export default function SidebarMenu() {
                 {item.name}
               </p>
             </div>
-            {item.notifications && (
+            {item.notifications && item.notifications !== 0 && (
               <div className=" bg-blue-400 rounded-full w-5 h-5 flex items-center justify-center p-3  ">
                 <p className="text-white font-bold">{item.notifications}</p>
               </div>

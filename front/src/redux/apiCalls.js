@@ -72,11 +72,12 @@ export const logout = (dispatch, navigate) => {
 //#region posts crud op
 
 //create
-export const createPost = async (post, dispatch) => {
+export const createPost = async (post, dispatch, setNewPost) => {
   dispatch(createPostStart());
   try {
     const res = await privateRequest.post("/posts/add", post);
     dispatch(createPostSuccess(res.data));
+    setNewPost("");
   } catch (error) {
     dispatch(createPostFailure());
   }
@@ -115,6 +116,14 @@ export const getProfileUserPosts = async (userId, setPosts) => {
 export const like = async (userId, postId) => {
   try {
     await privateRequest.put("/posts/like/" + postId, { userId });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const addComment = async (comment, postId, userId, setComment) => {
+  try {
+    await privateRequest.put("/posts/comment/" + postId, { comment, userId });
+    setComment("");
   } catch (error) {
     console.log(error);
   }

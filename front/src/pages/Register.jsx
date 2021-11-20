@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import FormInput from "../components/FormInput";
 import "../styles/login.css";
-import { registerInput } from "../helpers/inputs";
+import { registerInput } from "../helpers/data";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";

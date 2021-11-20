@@ -2,7 +2,7 @@ import { CommentOutlined, FavoriteBorder } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getUser, like as likePost } from "redux/apiCalls";
+import { addComment, getUser, like as likePost } from "redux/apiCalls";
 import Comment from "./Comment";
 
 export default function CardFeed({ post }) {
@@ -12,19 +12,23 @@ export default function CardFeed({ post }) {
   const [userPost, setUserPost] = useState({});
   const date = new Date(post.createdAt).toLocaleDateString("fr-FR");
   var [like, setLike] = useState(post.likes.includes(currentUser._id));
+  const [comment, setComment] = useState("");
   useEffect(() => {
     setLike(post.likes.includes(currentUser.user._id));
   }, [currentUser.user._id, post.likes]);
 
-  const handleLike = async () => {
+  useEffect(() => {
+    getUser(post.userId, setUserPost);
+  }, [post.userId]);
+
+  const handleLike = () => {
     setLike((like = !like));
     setLikeCount(like ? likeCount + 1 : likeCount - 1);
     likePost(currentUser.user._id, post._id);
   };
-
-  useEffect(() => {
-    getUser(post.userId, setUserPost);
-  }, [post.userId]);
+  const handleComment = () => {
+    addComment(comment, post._id, currentUser.user._id, setComment);
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-sm my-10 flex flex-col p-5">
@@ -71,20 +75,29 @@ export default function CardFeed({ post }) {
             </div>
           </button>
           <button
+            className=""
             onClick={() =>
               setCommentsActive((commentsActive = !commentsActive))
             }
           >
             <CommentOutlined className="text-gray-500" fontSize="large" />
+            <span className="text-gray-500 ml-1">{post.comments.length}</span>
           </button>
         </div>
         {commentsActive && (
-          <form className="flex items-center">
+          <form
+            className="flex items-center"
+            onSubmit={(e) => e.preventDefault()}
+          >
             <input
               type="text"
               className="border-b-2 p-2 w-full my-10 outline-none"
+              onChange={(e) => setComment(e.target.value)}
             />
-            <button className="p-2 border-2 border-blue-400 text-blue-400 rounded-lg">
+            <button
+              className="p-2 border-2 border-blue-400 text-blue-400 rounded-lg"
+              onClick={handleComment}
+            >
               commenter
             </button>
           </form>
@@ -104,7 +117,7 @@ export default function CardFeed({ post }) {
               <div className="flex flex-col w-full">
                 {/*Comment*/}
                 {post.comments.map((comment, key) => (
-                  <Comment item={comment} key={key} />
+                  <Comment item={comment} userPost={userPost} key={key} />
                 ))}
               </div>
             </div>
