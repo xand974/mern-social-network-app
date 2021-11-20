@@ -18,7 +18,9 @@ router.post("/add", checkToken, async (req, res) => {
 //#region get all user posts
 router.get("/all/:id", async (req, res) => {
   try {
-    const posts = await Post.find({ userId: req.params.id });
+    const posts = await Post.find({ userId: req.params.id }).sort({
+      createdAt: -1,
+    });
     return res.status(200).json(posts);
   } catch (error) {
     res.status(500).json(error);
@@ -68,6 +70,20 @@ router.put("/like/:postId", async (req, res) => {
     }
   } catch (error) {
     res.status(500).json(error);
+  }
+});
+
+router.put("/comment/:postId", checkToken, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+    await post.updateOne({
+      $push: {
+        comments: { comment: req.body.comment, userId: req.body.userId },
+      },
+    });
+    return res.status(200).json("post commented");
+  } catch (error) {
+    return res.status(500).json(error);
   }
 });
 

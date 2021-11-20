@@ -6,7 +6,16 @@ const postScema = new Schema(
   {
     userId: String,
     content: String,
-    comments: [{ body: String, date: Date }],
+    comments: [
+      {
+        comment: String,
+        userId: String,
+        date: {
+          type: String,
+          default: new Date(Date.now()).toLocaleDateString("fr-FR"),
+        },
+      },
+    ],
     likes: {
       type: Array,
       default: [],
