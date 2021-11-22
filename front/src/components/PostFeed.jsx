@@ -26,6 +26,7 @@ export default function PostFeed() {
       >
         <input
           type="text"
+          value={newPost}
           placeholder={`Quoi de neuf, ${currentUser?.user.username} ?`}
           className="w-full flex-1 outline-none placeholder-gray-500 "
           onChange={(e) => setNewPost(e.target.value)}

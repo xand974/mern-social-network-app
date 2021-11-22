@@ -7,13 +7,27 @@ import {
 import Register from "pages/Register";
 import Login from "pages/Login";
 import PrivateRoutes from "pages/PrivateRoutes";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Profile from "pages/Profile";
 import Home from "pages/Home";
 import Search from "pages/Search";
+import jwt from "jwt-decode";
+import { useEffect } from "react";
+import { logout } from "redux/apiCalls";
+import UpdateUser from "pages/UpdateUser";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (currentUser) {
+      const decodedToken = jwt(currentUser.accessToken);
+      if (decodedToken.exp * 1000 < Date.now()) {
+        logout(dispatch, null, false);
+      }
+    }
+  }, [currentUser, dispatch]);
+
   return (
     <div className=" h-screen overflow-hidden">
       <Router>
@@ -47,6 +61,14 @@ function App() {
             element={
               <PrivateRoutes>
                 <Search />
+              </PrivateRoutes>
+            }
+          />
+          <Route
+            path="/update/:id"
+            element={
+              <PrivateRoutes>
+                <UpdateUser />
               </PrivateRoutes>
             }
           />

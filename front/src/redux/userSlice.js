@@ -54,17 +54,10 @@ export const userSlice = createSlice({
       state.pending = false;
       state.error = true;
     },
-    getUserFriendsStart: (state) => {
-      state.pending = true;
-    },
 
     getUserFriendsSuccess: (state, action) => {
       state.pending = true;
       state.currentUser.user.friends = action.payload;
-    },
-    getUserFriends: (state) => {
-      state.pending = false;
-      state.error = true;
     },
     addFriend: (state, action) => {
       state.currentUser.user.friends = [
@@ -92,8 +85,6 @@ export const {
   getSearchUsersFailure,
   getSearchUsersStart,
   getSearchUsersSuccess,
-  getUserFriendsFailure,
-  getUserFriendsStart,
   getUserFriendsSuccess,
   addFriend,
   removeFriend,

@@ -38,7 +38,7 @@ export const postSlice = createSlice({
     },
     createPostSuccess: (state, action) => {
       state.pending = false;
-      state.timelinePost.push(action.payload);
+      state.timelinePost = [action.payload, ...state.timelinePost];
     },
     createPostFailure: (state) => {
       state.pending = false;

@@ -50,7 +50,7 @@ export default function Navbar() {
           </form>
           <button
             onClick={() => {
-              logout(dispatch, navigate);
+              logout(dispatch, navigate, true);
             }}
             className="ml-10 flex items-center bg-blue-400 text-white px-5 py-2 rounded-lg cursor-pointer"
           >
@@ -58,7 +58,7 @@ export default function Navbar() {
               <Logout className="mr-2" /> Logout
             </span>
           </button>
-          <Link to="/update">
+          <Link to={"/update/" + currentUser.user._id}>
             <img
               className="h-10 w-10 object-cover rounded-xl ml-10"
               src={currentUser.user.profilePicture}

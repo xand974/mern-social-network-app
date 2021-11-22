@@ -24,9 +24,7 @@ import {
   getSearchUsersStart,
   getSearchUsersSuccess,
   getSearchUsersFailure,
-  getUserFriendsStart,
   getUserFriendsSuccess,
-  getUserFriendsFailure,
   addFriend,
   removeFriend,
 } from "./userSlice";
@@ -55,13 +53,15 @@ export const register = async (credentials, navigate, dispatch) => {
   }
 };
 
-export const logout = (dispatch, navigate) => {
+export const logout = (dispatch, navigate = null, canNavigate) => {
   dispatch(logoutStart());
   try {
     dispatch(logoutSuccess());
     dispatch(logoutPosts());
     localStorage.removeItem("user");
-    navigate("/login");
+    if (canNavigate) {
+      navigate("/login");
+    }
   } catch (error) {
     console.log(error);
     dispatch(logoutFailure());
@@ -155,12 +155,11 @@ export const getUser = async (userId, setUser) => {
 };
 
 export const getUserFriends = async (dispatch, userId) => {
-  dispatch(getUserFriendsStart());
   try {
     const res = await privateRequest.get(`/users/${userId}/friends`);
     dispatch(getUserFriendsSuccess(res.data));
   } catch (error) {
-    dispatch(getUserFriendsFailure());
+    console.log(error);
   }
 };
 export const handleAddFriend = async (dispatch, userId) => {

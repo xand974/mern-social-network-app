@@ -44,11 +44,13 @@ router.get("/all", checkToken, async (req, res) => {
 
 router.get("/feed", checkToken, async (req, res) => {
   try {
-    const userPosts = await Post.find({ userId: req.user.id });
+    const userPosts = await Post.find({ userId: req.user.id }).sort({
+      createdAt: -1,
+    });
     const user = await User.findById(req.user.id);
     const friendsPosts = await Promise.all(
       user.friends.map((friendId) => {
-        return Post.find({ userId: friendId });
+        return Post.find({ userId: friendId }).sort({ createdAt: -1 });
       })
     );
     return res.status(200).json(userPosts.concat(...friendsPosts));

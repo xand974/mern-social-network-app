@@ -49,9 +49,9 @@ const userSchema = new Schema(
     from: { type: String, default: "Quelque part dans le monde" },
     relationship: {
       type: String,
-      EnCouple: "En couple",
-      Celibataire: "Célibataire",
-      Marié: "Marié",
+      coupled: "En couple",
+      single: "Célibataire",
+      married: "Marié",
     },
   },
   { timestamps: true }
