@@ -16,8 +16,6 @@ jobs:
         node-version: 12
     - run: npm ci
       working-directory: ./front
-    - run : npm test --if-present
-      working-directory: ./front
     - run : npm run build --if-present
       working-directory: ./front
     - run: npm run deploy
