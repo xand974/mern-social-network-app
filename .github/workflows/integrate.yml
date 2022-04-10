@@ -1,8 +1,7 @@
 name: Node CI Social App
 
 on:
-  pull_request:
-    branches: [master]
+  push
 
 jobs:
   test_pull_request:
@@ -10,8 +9,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
-      with:
-        node-version: 12
-        - run : /front/npm-ci
-        - run : /front/npm test
-        - run : /front/npm run build
+        with:
+          node-version: 12
+      - run: /front/npm ci
+      - run : /front/npm test
+      - run : /front/npm run build
+      - run: front/npm run deploy
