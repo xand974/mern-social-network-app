@@ -11,7 +11,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 12
-      - run: /front/npm ci
+      - run: npm ci
+      - working-directory: ./front
       - run : /front/npm test
-      - run : /front/npm run build
+      - working-directory: ./front
+      - run : /front/npm run build --if-present
+      - working-directory: ./front
       - run: front/npm run deploy
