@@ -115,7 +115,6 @@ export default function CardFeed({ post }) {
           {commentsActive && (
             <div className="flex">
               <div className="flex flex-col w-full">
-                {/*Comment*/}
                 {post.comments.map((comment, key) => (
                   <Comment item={comment} userPost={userPost} key={key} />
                 ))}
