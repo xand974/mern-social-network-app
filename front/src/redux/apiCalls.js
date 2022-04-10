@@ -63,8 +63,8 @@ export const logout = (dispatch, navigate = null, canNavigate) => {
       navigate("/login");
     }
   } catch (error) {
-    console.log(error);
     dispatch(logoutFailure());
+    throw new Error(error);
   }
 };
 //#endregion
@@ -110,14 +110,14 @@ export const getProfileUserPosts = async (userId, setPosts) => {
     const res = await privateRequest.get("/posts/all/" + userId);
     setPosts(res.data);
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 };
 export const like = async (userId, postId) => {
   try {
     await privateRequest.put("/posts/like/" + postId, { userId });
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 };
 export const addComment = async (comment, postId, userId, setComment) => {
@@ -125,7 +125,7 @@ export const addComment = async (comment, postId, userId, setComment) => {
     await privateRequest.put("/posts/comment/" + postId, { comment, userId });
     setComment("");
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 };
 //#endregion
@@ -150,7 +150,7 @@ export const getUser = async (userId, setUser) => {
     const res = await privateRequest.get(`/users/one?userId=${userId}`);
     setUser(res.data);
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 };
 
@@ -159,7 +159,7 @@ export const getUserFriends = async (dispatch, userId) => {
     const res = await privateRequest.get(`/users/${userId}/friends`);
     dispatch(getUserFriendsSuccess(res.data));
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 };
 export const handleAddFriend = async (dispatch, userId) => {
@@ -167,7 +167,7 @@ export const handleAddFriend = async (dispatch, userId) => {
     await privateRequest.put("/users/follow/" + userId, userId);
     dispatch(addFriend(userId));
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 };
 export const handleRemoveFriend = async (dispatch, userId) => {
@@ -175,7 +175,7 @@ export const handleRemoveFriend = async (dispatch, userId) => {
     await privateRequest.put("/users/unfollow/" + userId, userId);
     dispatch(removeFriend(userId));
   } catch (error) {
-    console.log(error);
+    throw new Error(error);
   }
 };
 //#endregion
