@@ -17,5 +17,3 @@ jobs:
     - run: npm ci
       working-directory: ./front
     - run : npm run build --if-present
-      working-directory: ./front
-    - run: npm run deploy
