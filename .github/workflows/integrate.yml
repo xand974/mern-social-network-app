@@ -12,9 +12,9 @@ jobs:
         with:
           node-version: 12
       - run: npm ci
-      - working-directory: ./front
+        working-directory: ./front
       - run : /front/npm test
-      - working-directory: ./front
+        working-directory: ./front
       - run : /front/npm run build --if-present
-      - working-directory: ./front
+        working-directory: ./front
       - run: front/npm run deploy
