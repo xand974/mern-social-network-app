@@ -11,7 +11,7 @@ export default function UserCard() {
           <img
             className="w-16 h-16 rounded-lg mr-5"
             src={currentUser.user.profilePicture}
-            alt=""
+            alt="smile"
           />
         </div>
         <div className="">
