@@ -169,6 +169,7 @@ export const handleAddFriend = async (dispatch, userId) => {
     throw error;
   }
 };
+
 export const handleRemoveFriend = async (dispatch, userId) => {
   try {
     await privateRequest.put("/users/unfollow/" + userId, userId);

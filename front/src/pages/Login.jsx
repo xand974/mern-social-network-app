@@ -50,7 +50,7 @@ export default function Login() {
           </span>
         )}
         <Link to="/register" className="border-b-2 mb-10">
-          <span className="text-gray-400 text-center">s'enregistrer</span>
+          <span className="text-gray-400 text-center">S'enregistrer</span>
         </Link>
       </form>
     </div>
