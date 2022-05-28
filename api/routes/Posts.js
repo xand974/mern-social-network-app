@@ -7,8 +7,8 @@ const checkToken = require("../middlewares/checkToken");
 router.post("/add", checkToken, async (req, res) => {
   try {
     const post = new Post(req.body);
-    await post.save();
-    return res.status(200).json(post);
+    const newPost = await post.save();
+    return res.status(200).json(newPost);
   } catch (error) {
     return res.status(500).json(error);
   }
@@ -23,7 +23,7 @@ router.get("/all/:id", async (req, res) => {
     });
     return res.status(200).json(posts);
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 });
 
@@ -32,7 +32,9 @@ router.get("/all/:id", async (req, res) => {
 // #region all current user posts
 router.get("/all", checkToken, async (req, res) => {
   try {
-    const posts = await Post.find({ userId: req.user.id });
+    const posts = await Post.find({ userId: req.user.id }).sort({
+      createdAt: -1,
+    });
     return res.status(200).json(posts);
   } catch (err) {
     return res.status(500).json(err);
@@ -44,16 +46,18 @@ router.get("/all", checkToken, async (req, res) => {
 
 router.get("/feed", checkToken, async (req, res) => {
   try {
-    const userPosts = await Post.find({ userId: req.user.id }).sort({
-      createdAt: -1,
-    });
+    const userPosts = await Post.find({ userId: req.user.id });
     const user = await User.findById(req.user.id);
     const friendsPosts = await Promise.all(
       user.friends.map((friendId) => {
-        return Post.find({ userId: friendId }).sort({ createdAt: -1 });
+        return Post.find({ userId: friendId }).sort({ createdAt: 1 });
       })
     );
-    return res.status(200).json(userPosts.concat(...friendsPosts));
+    const friendsAndUserPosts = userPosts.concat(...friendsPosts);
+    const sorted = friendsAndUserPosts.sort(
+      (a, b) => b.createdAt - a.createdAt
+    );
+    return res.status(200).json(sorted);
   } catch (error) {
     return res.status(500).json("error" + error);
   }
@@ -71,7 +75,7 @@ router.put("/like/:postId", async (req, res) => {
       return res.status(200).json("post disliked");
     }
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 });
 

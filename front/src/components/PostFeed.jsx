@@ -10,6 +10,7 @@ export default function PostFeed() {
 
   const handleClick = () => {
     createPost({ content: newPost, userId: currentUser.user._id }, dispatch);
+    setNewPost("");
   };
 
   return (

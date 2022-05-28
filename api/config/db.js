@@ -6,5 +6,5 @@ mongoose
     console.log("db is connected");
   })
   .catch((err) => {
-    console.log(err);
+    throw err;
   });

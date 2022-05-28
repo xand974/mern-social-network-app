@@ -2,7 +2,7 @@ import { Logout, SearchOutlined } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { logout } from "redux/apiCalls";
+import { signOut } from "redux/apiCalls";
 import logo from "../Images/Marque.png";
 import "../styles/navbar.css";
 export default function Navbar() {
@@ -50,7 +50,7 @@ export default function Navbar() {
           </form>
           <button
             onClick={() => {
-              logout(dispatch, navigate, true);
+              signOut(dispatch, navigate, true);
             }}
             className="ml-10 flex items-center bg-blue-400 text-white px-5 py-2 rounded-lg cursor-pointer"
           >

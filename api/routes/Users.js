@@ -11,7 +11,7 @@ router.get("/one", checkToken, async (req, res) => {
     const userFound = userId
       ? await User.findById(userId)
       : await User.findOne({ username });
-    !userFound && res.status(404).send("aucun utilisateur trouvé");
+    if (!userFound) return res.status(404).send("aucun utilisateur trouvé");
 
     const { password, updatedAt, ...other } = userFound._doc;
     return res.status(200).send(other);
@@ -78,7 +78,7 @@ router.put("/follow/:id", checkToken, async (req, res) => {
     }
     return res.status(403).json("vous suivez déjà cette personne");
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 });
 //#endregion
@@ -101,7 +101,7 @@ router.put("/unfollow/:id", checkToken, async (req, res) => {
     }
     return res.status(403).json("vous suivez déjà cette personne");
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 });
 //#endregion
@@ -122,9 +122,9 @@ router.get("/search", checkToken, async (req, res) => {
   try {
     const searchQuery = req.query.search_query;
     const users = await User.find({ $text: { $search: searchQuery } });
-    res.status(200).json(users);
+    return res.status(200).json(users);
   } catch (error) {
-    res.status(500).json(error);
+    return res.status(500).json(error);
   }
 });
 //#endregion

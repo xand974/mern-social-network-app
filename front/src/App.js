@@ -13,7 +13,7 @@ import Home from "pages/Home";
 import Search from "pages/Search";
 import jwt from "jwt-decode";
 import { useEffect } from "react";
-import { logout } from "redux/apiCalls";
+import { signOut } from "redux/apiCalls";
 import UpdateUser from "pages/UpdateUser";
 
 function App() {
@@ -23,7 +23,7 @@ function App() {
     if (currentUser) {
       const decodedToken = jwt(currentUser.accessToken);
       if (decodedToken.exp * 1000 < Date.now()) {
-        logout(dispatch, null, false);
+        signOut(dispatch, null, false);
       }
     }
   }, [currentUser, dispatch]);
@@ -70,6 +70,12 @@ function App() {
               <PrivateRoutes>
                 <UpdateUser />
               </PrivateRoutes>
+            }
+          />
+          <Route
+            path="*"
+            element={
+              currentUser ? <Navigate to="/" /> : <Navigate to="/login" />
             }
           />
         </Routes>

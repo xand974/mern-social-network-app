@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 
 export const postSlice = createSlice({
   name: "posts",
@@ -9,6 +9,22 @@ export const postSlice = createSlice({
     error: false,
   },
   reducers: {
+    addCommentPost: (state, action) => {
+      const timelinePosts = current(state.timelinePost);
+      const posts = timelinePosts.map((item) => {
+        if (item._id === action.payload.id) {
+          return {
+            ...item,
+            comments: [...item.comments, action.payload.comment],
+          };
+        }
+        return item;
+      });
+      return {
+        ...state,
+        timelinePost: posts,
+      };
+    },
     getTimelineStart: (state) => {
       state.pending = true;
     },
@@ -61,4 +77,5 @@ export const {
   createPostStart,
   createPostSuccess,
   logoutPosts,
+  addCommentPost,
 } = postSlice.actions;

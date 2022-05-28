@@ -1,8 +1,9 @@
 import { CommentOutlined, FavoriteBorder } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { addComment, getUser, like as likePost } from "redux/apiCalls";
+import { addCommentPost } from "redux/postSlice";
 import Comment from "./Comment";
 
 export default function CardFeed({ post }) {
@@ -13,6 +14,7 @@ export default function CardFeed({ post }) {
   const date = new Date(post.createdAt).toLocaleDateString("fr-FR");
   var [like, setLike] = useState(post.likes.includes(currentUser._id));
   const [comment, setComment] = useState("");
+  const dispatch = useDispatch();
   useEffect(() => {
     setLike(post.likes.includes(currentUser.user._id));
   }, [currentUser.user._id, post.likes]);
@@ -26,8 +28,15 @@ export default function CardFeed({ post }) {
     setLikeCount(like ? likeCount + 1 : likeCount - 1);
     likePost(currentUser.user._id, post._id);
   };
-  const handleComment = () => {
-    addComment(comment, post._id, currentUser.user._id, setComment);
+  const handleComment = async () => {
+    await addComment(comment, post._id, currentUser.user._id, setComment);
+    dispatch(
+      addCommentPost({
+        id: post._id,
+        comment: { comment: comment, userId: currentUser.user._id },
+      })
+    );
+    setComment("");
   };
 
   return (
@@ -91,12 +100,14 @@ export default function CardFeed({ post }) {
           >
             <input
               type="text"
+              value={comment}
+              name="comment"
               className="border-b-2 p-2 w-full my-10 outline-none"
               onChange={(e) => setComment(e.target.value)}
             />
             <button
               className="p-2 border-2 border-blue-400 text-blue-400 rounded-lg"
-              onClick={handleComment}
+              onClick={() => handleComment()}
             >
               commenter
             </button>
@@ -109,7 +120,9 @@ export default function CardFeed({ post }) {
               setCommentsActive((commentsActive = !commentsActive))
             }
           >
-            Afficher les commentaires
+            {!commentsActive
+              ? "Afficher les commentaires"
+              : "Masquer les commentaires"}
           </button>
 
           {commentsActive && (
