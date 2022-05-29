@@ -8,12 +8,12 @@ export default function PostFeed() {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [newPost, setNewPost] = useState("");
-  const [image, setImage] = useState({});
+  const [image, setImage] = useState(undefined);
   const [loading, setLoading] = useState(false);
 
   const getImgURL = async () => {
-    const img = URL.createObjectURL(image);
-    return img;
+    if (!image) return "";
+    return URL.createObjectURL(image);
   };
 
   const handleClick = async () => {
@@ -22,10 +22,15 @@ export default function PostFeed() {
 
       setLoading(true);
       await createPost(
-        { content: newPost, userId: currentUser.user._id, notePicture: imgURL },
+        {
+          content: newPost,
+          userId: currentUser?.user?._id,
+          notePicture: imgURL,
+        },
         dispatch
       );
       setNewPost("");
+      setImage(undefined);
 
       setLoading(false);
     } catch (error) {
@@ -38,7 +43,7 @@ export default function PostFeed() {
     <div className="bg-white shadow-lg p-5 flex items-center rounded-lg mb-11">
       <Loading loading={loading} />
       <img
-        src={currentUser.user.profilePicture}
+        src={currentUser?.user?.profilePicture}
         alt="photoURL of the user"
         className="w-16 h-10 rounded-lg object-cover mr-5"
       />
@@ -50,7 +55,7 @@ export default function PostFeed() {
         <input
           type="text"
           value={newPost}
-          placeholder={`Quoi de neuf, ${currentUser?.user.username} ?`}
+          placeholder={`Quoi de neuf, ${currentUser?.user?.username} ?`}
           className="w-full flex-1 outline-none placeholder-gray-500 "
           onChange={(e) => setNewPost(e.target.value)}
         />

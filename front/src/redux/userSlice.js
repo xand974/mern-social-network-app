@@ -20,16 +20,6 @@ export const userSlice = createSlice({
       state.error = true;
       state.pending = false;
     },
-    registerStart: (state) => {
-      state.pending = true;
-    },
-    registerSuccess: (state) => {
-      state.pending = false;
-    },
-    registerFailure: (state) => {
-      state.error = true;
-      state.pending = false;
-    },
     logoutStart: (state) => {
       state.pending = true;
     },
@@ -76,9 +66,6 @@ export const {
   loginFailure,
   loginStart,
   loginSuccess,
-  registerFailure,
-  registerStart,
-  registerSuccess,
   logoutSuccess,
   logoutFailure,
   logoutStart,

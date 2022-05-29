@@ -21,7 +21,7 @@ function App() {
   const dispatch = useDispatch();
   useEffect(() => {
     if (currentUser) {
-      const decodedToken = jwt(currentUser.accessToken);
+      const decodedToken = jwt(currentUser?.accessToken);
       if (decodedToken.exp * 1000 < Date.now()) {
         signOut(dispatch, null, false);
       }

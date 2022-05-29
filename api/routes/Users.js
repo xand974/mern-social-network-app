@@ -69,10 +69,10 @@ router.put("/follow/:id", checkToken, async (req, res) => {
     const currentUser = await User.findById(req.user.id);
     const targetUser = await User.findById(req.params.id);
     if (
-      !currentUser.friends.includes(req.params.id) &&
+      !currentUser?.friends.includes(req.params.id) &&
       !targetUser.friends.includes(req.user.id)
     ) {
-      await currentUser.update({ $push: { friends: req.params.id } });
+      await currentUser?.update({ $push: { friends: req.params.id } });
       await targetUser.update({ $push: { friends: req.user.id } });
       return res.status(200).json("vous suivez une nouvelle personne");
     }
@@ -92,10 +92,10 @@ router.put("/unfollow/:id", checkToken, async (req, res) => {
     const currentUser = await User.findById(req.user.id);
     const targetUser = await User.findById(req.params.id);
     if (
-      currentUser.friends.includes(req.params.id) &&
+      currentUser?.friends.includes(req.params.id) &&
       targetUser.friends.includes(req.user.id)
     ) {
-      await currentUser.update({ $pull: { friends: req.params.id } });
+      await currentUser?.update({ $pull: { friends: req.params.id } });
       await targetUser.update({ $pull: { friends: req.user.id } });
       return res.status(200).json("vous ne suivez plus une personne");
     }

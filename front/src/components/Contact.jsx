@@ -5,15 +5,15 @@ import ContactMenu from "./ContactMenu";
 
 export default function Contact() {
   const { currentUser } = useSelector((state) => state.user);
-  const [friends, setFriends] = useState(currentUser.user?.friends ?? []);
+  const [friends, setFriends] = useState(currentUser?.user?.friends ?? []);
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchFriends = async () => {
-      const res = await getUserFriends(dispatch, currentUser.user._id);
+      const res = await getUserFriends(dispatch, currentUser?.user?._id);
       setFriends(res);
     };
     fetchFriends();
-  }, [dispatch, currentUser.user._id]);
+  }, [dispatch, currentUser?.user?._id]);
 
   return (
     <div className="flex-1 overflow-y-scroll mb-10">
@@ -24,7 +24,7 @@ export default function Contact() {
         </p>
       </div>
       {friends && friends?.length > 0 && (
-        <ContactMenu friends={currentUser.user.friends} />
+        <ContactMenu friends={currentUser?.user?.friends} />
       )}
     </div>
   );

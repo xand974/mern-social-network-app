@@ -19,7 +19,7 @@ export default function CardFeed({ post }) {
 
   /*STATES*/
   const [commentsActive, setCommentsActive] = useState(false);
-  const [like, setLike] = useState(post.likes.includes(currentUser._id));
+  const [like, setLike] = useState(post.likes.includes(currentUser?._id));
   const [loading, setLoading] = useState(false);
   const [likeCount, setLikeCount] = useState(post.likes.length);
   const [userPost, setUserPost] = useState({});
@@ -31,8 +31,8 @@ export default function CardFeed({ post }) {
 
   /*EFFECTS*/
   useEffect(() => {
-    setLike(post.likes.includes(currentUser.user._id));
-  }, [currentUser.user._id, post.likes]);
+    setLike(post.likes.includes(currentUser?.user._id));
+  }, [currentUser?.user._id, post.likes]);
 
   useEffect(() => {
     getUser(post.userId, setUserPost);
@@ -45,7 +45,7 @@ export default function CardFeed({ post }) {
       setLikeCount((prev) => {
         return like ? prev - 1 : prev + 1;
       });
-      await likePost(currentUser.user._id, post._id);
+      await likePost(currentUser?.user._id, post._id);
     } catch (error) {
       throw error;
     }
@@ -53,11 +53,11 @@ export default function CardFeed({ post }) {
   const handleComment = async () => {
     try {
       setLoading(true);
-      await addComment(comment, post._id, currentUser.user._id, setComment);
+      await addComment(comment, post._id, currentUser?.user._id, setComment);
       dispatch(
         addCommentPost({
           id: post._id,
-          comment: { comment: comment, userId: currentUser.user._id },
+          comment: { comment: comment, userId: currentUser?.user._id },
         })
       );
       setComment("");
@@ -82,7 +82,7 @@ export default function CardFeed({ post }) {
   const deletePost = async () => {
     try {
       setLoading(true);
-      await removePost(dispatch, post._id, currentUser.user?._id);
+      await removePost(dispatch, post._id, currentUser?.user?._id);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -103,7 +103,7 @@ export default function CardFeed({ post }) {
 
   const populateMenuDropdown = () => {
     return menusDropdown.filter((item) => {
-      if (post.userId !== currentUser.user?._id)
+      if (post.userId !== currentUser?.user?._id)
         return item.tag !== "removePost";
       return item;
     });

@@ -14,13 +14,13 @@ export default function ProfileBanner({
 }) {
   const { currentUser } = useSelector((state) => state.user);
   const [isFriend, setIsFriend] = useState(
-    currentUser.user.friends.includes(id)
+    currentUser?.user.friends.includes(id)
   );
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setIsFriend(currentUser.user.friends.includes(id));
-  }, [currentUser.user.friends, id]);
+    setIsFriend(currentUser?.user.friends.includes(id));
+  }, [currentUser?.user.friends, id]);
 
   return (
     <div>
@@ -37,7 +37,7 @@ export default function ProfileBanner({
             alt=""
           />
         </div>
-        {currentUser.user._id !== id && (
+        {currentUser?.user._id !== id && (
           <>
             {isFriend ? (
               <div className="profile__banner-button absolute right-4 px-4 py-1 bg-black text-white rounded-lg shadow-md -bottom-16 ">

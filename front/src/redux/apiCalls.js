@@ -16,9 +16,6 @@ import {
   loginStart,
   loginSuccess,
   loginFailure,
-  registerFailure,
-  registerStart,
-  registerSuccess,
   logoutSuccess,
   logoutStart,
   logoutFailure,
@@ -42,15 +39,12 @@ export const login = async (credentials, dispatch, navigate) => {
     dispatch(loginFailure());
   }
 };
-export const register = async (credentials, navigate, dispatch) => {
-  dispatch(registerStart());
+export const register = async (credentials, navigate) => {
   try {
-    openRequest.post("/auth/register", credentials).then(() => {
-      navigate("/login");
-      dispatch(registerSuccess());
-    });
+    await openRequest.post("/auth/register", credentials);
+    navigate("/login");
   } catch (error) {
-    dispatch(registerFailure());
+    throw error;
   }
 };
 

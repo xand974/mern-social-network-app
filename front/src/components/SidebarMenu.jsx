@@ -12,7 +12,7 @@ export default function SidebarMenu() {
       id: 2,
       name: "Profile",
       icon: "PersonOutlined",
-      link: `/profile/${currentUser.user._id}`,
+      link: `/profile/${currentUser?.user?._id}`,
       notifications: 0,
     },
     { id: 3, name: "Settings", icon: "SettingsOutlined", link: "/settings" },

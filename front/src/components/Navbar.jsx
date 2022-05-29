@@ -58,10 +58,10 @@ export default function Navbar() {
               <Logout className="mr-2" /> Logout
             </span>
           </button>
-          <Link to={"/update/" + currentUser.user._id}>
+          <Link to={"/update/" + currentUser?.user?._id}>
             <img
               className="h-10 w-10 object-cover rounded-xl ml-10"
-              src={currentUser.user.profilePicture}
+              src={currentUser?.user?.profilePicture}
               alt=""
             />
           </Link>
