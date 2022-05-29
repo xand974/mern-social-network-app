@@ -18,4 +18,9 @@ privateRequest.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+privateRequest.interceptors.response.use(undefined, (err) => {
+  localStorage.clear();
+  window.location.reload();
+});
+
 export { privateRequest };
