@@ -116,7 +116,7 @@ router.put("/one/:id", checkToken, async (req, res) => {
 //#endregion
 
 // #region delete
-router.delete("/:id", checkToken, async (req, res) => {
+router.post("/remove/:id", checkToken, async (req, res) => {
   try {
     if (req.body.id === req.user.id) {
       await Post.findByIdAndDelete(req.params.id);

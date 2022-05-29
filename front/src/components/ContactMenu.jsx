@@ -2,7 +2,7 @@ import { privateRequest } from "helpers/axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import "../styles/contactmenu.css";
+import Dropdown from "./Dropdown";
 
 export default function ContactMenu({ friends }) {
   const [friendsInfos, setFriendsInfos] = useState([]);
@@ -20,7 +20,35 @@ export default function ContactMenu({ friends }) {
     fetchFriendInfos();
   }, [friends]);
 
-  const [active, setActive] = useState(false);
+  const openDropdown = async (tag, setActive) => {
+    switch (tag) {
+      case "sendMessage":
+        break;
+      case "deleteFriend":
+        break;
+      case "goToProfile":
+        break;
+      default:
+        break;
+    }
+    setActive(false);
+  };
+
+  const menusDropdown = [
+    {
+      tag: "sendMessage",
+      text: "Send a message",
+    },
+    {
+      tag: "deleteFriend",
+      text: "Remove from friend's list",
+    },
+    {
+      tag: "goToProfile",
+      text: "See the profile",
+    },
+  ];
+
   return (
     <div className="bg-white w-10/12 rounded-lg margin-left-right-auto  py-1 shadow-sm">
       {friendsInfos.map((friend, key) => (
@@ -45,28 +73,7 @@ export default function ContactMenu({ friends }) {
               <p className="text-white font-bold">{friend.notification}</p>
             </div>
           ) : (
-            <div
-              className=" relative flex items-center justify-center"
-              onBlur={() => setActive(false)}
-            >
-              <button
-                className={`dropdown-btn text-gray-500 font-bold  rounded-md px-2 hover:bg-white transition-all`}
-                onClick={() => setActive(true)}
-              >
-                ...
-              </button>
-              <div className={`dropdown ${active ? "active" : ""}`}>
-                <Link to={`/messages/${friend.id}`}>
-                  <span>envoyer un message</span>
-                </Link>
-                <Link to={`/profile/${friend.id}`}>
-                  <span>profile</span>
-                </Link>
-                <button className="btn-dropdown">
-                  <span>supprimer des amis</span>
-                </button>
-              </div>
-            </div>
+            <Dropdown menus={menusDropdown} handleClick={openDropdown} />
           )}
         </div>
       ))}

@@ -2,19 +2,41 @@ import { AutoAwesomeOutlined, ImageOutlined } from "@mui/icons-material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "redux/apiCalls";
+import Loading from "./Loading";
 
 export default function PostFeed() {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [newPost, setNewPost] = useState("");
+  const [image, setImage] = useState({});
+  const [loading, setLoading] = useState(false);
 
-  const handleClick = () => {
-    createPost({ content: newPost, userId: currentUser.user._id }, dispatch);
-    setNewPost("");
+  const getImgURL = async () => {
+    const img = URL.createObjectURL(image);
+    return img;
+  };
+
+  const handleClick = async () => {
+    try {
+      const imgURL = await getImgURL();
+
+      setLoading(true);
+      await createPost(
+        { content: newPost, userId: currentUser.user._id, notePicture: imgURL },
+        dispatch
+      );
+      setNewPost("");
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
   };
 
   return (
     <div className="bg-white shadow-lg p-5 flex items-center rounded-lg mb-11">
+      <Loading loading={loading} />
       <img
         src={currentUser.user.profilePicture}
         alt="photoURL of the user"
@@ -40,7 +62,12 @@ export default function PostFeed() {
           >
             <ImageOutlined />
           </label>
-          <input type="file" id="img" className="hidden" />
+          <input
+            onChange={(e) => setImage(e.target.files[0])}
+            type="file"
+            id="img"
+            className="hidden"
+          />
         </div>
         <button
           className="bg-blue-400 text-white px-5 py-2 flex items-center rounded-lg"

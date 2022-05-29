@@ -63,6 +63,14 @@ export const postSlice = createSlice({
     logoutPosts: (state) => {
       state.timelinePost = [];
     },
+    removePost: (state, action) => {
+      const posts = current(state.timelinePost);
+      const filtered = posts.filter((item) => item._id !== action.payload.id);
+      return {
+        ...state,
+        timelinePost: filtered,
+      };
+    },
   },
 });
 export default postSlice.reducer;
@@ -76,6 +84,7 @@ export const {
   createPostFailure,
   createPostStart,
   createPostSuccess,
+  removePost,
   logoutPosts,
   addCommentPost,
 } = postSlice.actions;

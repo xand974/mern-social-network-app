@@ -1,5 +1,6 @@
 import CardFeed from "components/CardFeed";
 import Contact from "components/Contact";
+import Loading from "components/Loading";
 import ProfileBanner from "components/ProfileBanner";
 import ProfileInfos from "components/ProfileInfos";
 import React from "react";
@@ -13,14 +14,27 @@ export default function Profile() {
   const location = useLocation();
   const [user, setUser] = useState({});
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState([]);
   const USER_ID = location.pathname.split("/")[2];
+
   useEffect(() => {
-    getUser(USER_ID, setUser);
-    getProfileUserPosts(USER_ID, setPosts);
+    const getUserAndProfile = async () => {
+      try {
+        setLoading(true);
+        await getUser(USER_ID, setUser);
+        await getProfileUserPosts(USER_ID, setPosts);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        throw error;
+      }
+    };
+    getUserAndProfile();
   }, [USER_ID]);
 
   return (
     <Layout>
+      <Loading loading={loading} />
       <div className="flex-2 overflow-scroll">
         <ProfileBanner
           bio={user.bio}

@@ -1,13 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserFriends } from "redux/apiCalls";
 import ContactMenu from "./ContactMenu";
 
 export default function Contact() {
   const { currentUser } = useSelector((state) => state.user);
+  const [friends, setFriends] = useState(currentUser.user?.friends ?? []);
   const dispatch = useDispatch();
   useEffect(() => {
-    getUserFriends(dispatch, currentUser.user._id);
+    const fetchFriends = async () => {
+      const res = await getUserFriends(dispatch, currentUser.user._id);
+      setFriends(res);
+    };
+    fetchFriends();
   }, [dispatch, currentUser.user._id]);
 
   return (
@@ -15,10 +20,10 @@ export default function Contact() {
       <div className="flex items-center justify-between mb-5 w-10/12 margin-left-right-auto">
         <h3 className="text-xl font-bold text-gray-500">Mes contacts</h3>
         <p className="bg-gray-300 px-2 text-lg rounded-lg text-white font-bold">
-          {currentUser.user.friends.length}
+          {friends && friends.length}
         </p>
       </div>
-      {currentUser.user.friends.length > 0 && (
+      {friends && friends?.length > 0 && (
         <ContactMenu friends={currentUser.user.friends} />
       )}
     </div>

@@ -1,19 +1,7 @@
 import axios from "axios";
+import { store } from "redux/store";
 
-const BASE_URL = "http://localhost:5000/api/v1";
-let TOKEN;
-
-const checkLocalStorage = () => {
-  const userInLS = JSON.parse(localStorage.getItem("user"));
-  if (userInLS === null) {
-    TOKEN = "";
-  } else {
-    TOKEN = userInLS?.accessToken;
-  }
-};
-
-checkLocalStorage();
-
+const BASE_URL = process.env.REACT_APP_API_URL;
 export const openRequest = axios.create({ baseURL: BASE_URL });
 
 const privateRequest = axios.create({
@@ -22,6 +10,7 @@ const privateRequest = axios.create({
 
 privateRequest.interceptors.request.use(
   (config) => {
+    const TOKEN = store.getState().user.currentUser?.accessToken;
     const auth = TOKEN ? `Bearer ${TOKEN}` : "";
     config.headers.common["authorization"] = auth;
     return config;

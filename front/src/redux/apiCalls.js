@@ -10,6 +10,7 @@ import {
   getCurrentUserPostsStart,
   getCurrentUserPostsSuccess,
   logoutPosts,
+  removePost as remove,
 } from "./postSlice";
 import {
   loginStart,
@@ -157,6 +158,7 @@ export const getUserFriends = async (dispatch, userId) => {
   try {
     const res = await privateRequest.get(`/users/${userId}/friends`);
     dispatch(getUserFriendsSuccess(res.data));
+    return res.data;
   } catch (error) {
     throw error;
   }
@@ -174,6 +176,16 @@ export const handleRemoveFriend = async (dispatch, userId) => {
   try {
     await privateRequest.put("/users/unfollow/" + userId, userId);
     dispatch(removeFriend(userId));
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const removePost = async (dispatch, postId, userId) => {
+  try {
+    if (!userId) return;
+    await privateRequest.post("/posts/remove/" + postId, { id: userId });
+    dispatch(remove({ id: postId }));
   } catch (error) {
     throw error;
   }

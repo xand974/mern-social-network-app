@@ -2,19 +2,34 @@ import { CommentOutlined, FavoriteBorder } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { addComment, getUser, like as likePost } from "redux/apiCalls";
+import {
+  addComment,
+  getUser,
+  like as likePost,
+  removePost,
+} from "redux/apiCalls";
 import { addCommentPost } from "redux/postSlice";
 import Comment from "./Comment";
+import Dropdown from "./Dropdown";
+import Loading from "./Loading";
 
 export default function CardFeed({ post }) {
-  var [commentsActive, setCommentsActive] = useState(false);
-  const [likeCount, setLikeCount] = useState(post.likes.length);
+  /*SELECTORS*/
   const { currentUser } = useSelector((state) => state.user);
+
+  /*STATES*/
+  const [commentsActive, setCommentsActive] = useState(false);
+  const [like, setLike] = useState(post.likes.includes(currentUser._id));
+  const [loading, setLoading] = useState(false);
+  const [likeCount, setLikeCount] = useState(post.likes.length);
   const [userPost, setUserPost] = useState({});
-  const date = new Date(post.createdAt).toLocaleDateString("fr-FR");
-  var [like, setLike] = useState(post.likes.includes(currentUser._id));
   const [comment, setComment] = useState("");
+
+  /*UTILS*/
+  const date = new Date(post.createdAt).toLocaleDateString("fr-FR");
   const dispatch = useDispatch();
+
+  /*EFFECTS*/
   useEffect(() => {
     setLike(post.likes.includes(currentUser.user._id));
   }, [currentUser.user._id, post.likes]);
@@ -23,24 +38,80 @@ export default function CardFeed({ post }) {
     getUser(post.userId, setUserPost);
   }, [post.userId]);
 
-  const handleLike = () => {
-    setLike((like = !like));
-    setLikeCount(like ? likeCount + 1 : likeCount - 1);
-    likePost(currentUser.user._id, post._id);
+  /*FUNCTIONS*/
+  const handleLike = async () => {
+    try {
+      setLike((prev) => (prev = !prev));
+      setLikeCount((prev) => {
+        return like ? prev - 1 : prev + 1;
+      });
+      await likePost(currentUser.user._id, post._id);
+    } catch (error) {
+      throw error;
+    }
   };
   const handleComment = async () => {
-    await addComment(comment, post._id, currentUser.user._id, setComment);
-    dispatch(
-      addCommentPost({
-        id: post._id,
-        comment: { comment: comment, userId: currentUser.user._id },
-      })
-    );
-    setComment("");
+    try {
+      setLoading(true);
+      await addComment(comment, post._id, currentUser.user._id, setComment);
+      dispatch(
+        addCommentPost({
+          id: post._id,
+          comment: { comment: comment, userId: currentUser.user._id },
+        })
+      );
+      setComment("");
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
+  };
+
+  const openDropdown = async (tag, setActive) => {
+    switch (tag) {
+      case "removePost":
+        await deletePost();
+        break;
+      default:
+        break;
+    }
+    setActive(false);
+  };
+
+  const deletePost = async () => {
+    try {
+      setLoading(true);
+      await removePost(dispatch, post._id, currentUser.user?._id);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
+  };
+
+  const menusDropdown = [
+    {
+      tag: "removePost",
+      text: "Remove Post",
+    },
+    {
+      tag: "share",
+      text: "Share Post",
+    },
+  ];
+
+  const populateMenuDropdown = () => {
+    return menusDropdown.filter((item) => {
+      if (post.userId !== currentUser.user?._id)
+        return item.tag !== "removePost";
+      return item;
+    });
   };
 
   return (
     <div className="bg-white rounded-lg shadow-sm my-10 flex flex-col p-5">
+      <Loading loading={loading} />
       {/* header */}
       <div className="flex items-center">
         <div className="flex-1 flex items-center">
@@ -57,7 +128,10 @@ export default function CardFeed({ post }) {
           </div>
         </div>
         <div className="dropdown-card flex items-center relative">
-          <span className="text-2xl">...</span>
+          <Dropdown
+            menus={populateMenuDropdown()}
+            handleDropdown={openDropdown}
+          />
         </div>
       </div>
       {/* content */}
@@ -85,9 +159,7 @@ export default function CardFeed({ post }) {
           </button>
           <button
             className=""
-            onClick={() =>
-              setCommentsActive((commentsActive = !commentsActive))
-            }
+            onClick={() => setCommentsActive((prev) => (prev = !prev))}
           >
             <CommentOutlined className="text-gray-500" fontSize="large" />
             <span className="text-gray-500 ml-1">{post.comments.length}</span>
@@ -116,9 +188,7 @@ export default function CardFeed({ post }) {
         <div className="flex flex-col">
           <button
             className="text-gray-400"
-            onClick={() =>
-              setCommentsActive((commentsActive = !commentsActive))
-            }
+            onClick={() => setCommentsActive((prev) => (prev = !prev))}
           >
             {!commentsActive
               ? "Afficher les commentaires"
