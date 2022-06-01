@@ -13,7 +13,7 @@ import Home from "pages/Home";
 import Search from "pages/Search";
 import jwt from "jwt-decode";
 import { useEffect } from "react";
-import { signOut } from "redux/apiCalls";
+import { signOut, checkAuth } from "redux/apiCalls";
 import UpdateUser from "pages/UpdateUser";
 
 function App() {
@@ -22,8 +22,12 @@ function App() {
   useEffect(() => {
     if (currentUser) {
       const decodedToken = jwt(currentUser?.accessToken);
-      if (decodedToken.exp * 1000 < Date.now()) {
+      if (
+        checkAuth(decodedToken, dispatch) &&
+        decodedToken?.exp * 1000 < Date.now()
+      ) {
         signOut(dispatch, null, false);
+        window.location.reload();
       }
     }
   }, [currentUser, dispatch]);

@@ -179,3 +179,13 @@ export const removePost = async (dispatch, postId, userId) => {
   }
 };
 //#endregion
+
+export const checkAuth = async (token, dispatch) => {
+  try {
+    if (!token) return signOut(dispatch, null, false);
+    return await privateRequest.post("/auth/check-auth", token);
+  } catch (error) {
+    signOut(dispatch, null, false);
+    throw error;
+  }
+};

@@ -2,6 +2,7 @@ const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const { generateAccessToken } = require("../helpers/token");
 const User = require("../models/User");
+const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res) => {
   try {
@@ -43,6 +44,24 @@ router.post("/login", async (req, res) => {
     return res.status(200).json({ user: rest, accessToken });
   } catch (err) {
     return res.status(500).json("err" + err);
+  }
+});
+
+router.post("/check-auth", (req, res) => {
+  try {
+    const tokenFromHeader = req.headers.authorization;
+    if (!tokenFromHeader)
+      return res.status(401).json("you are not authentificated");
+    const token = tokenFromHeader.split(" ")[1];
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY, (err, payload) => {
+      if (err) return res.status(403).json("token is not valid");
+
+      req.user = payload;
+      return res.status(200).json({ data: "success" });
+    });
+  } catch (error) {
+    return res.status(500).json(err);
   }
 });
 
