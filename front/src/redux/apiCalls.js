@@ -6,9 +6,6 @@ import {
   getTimelineFailure,
   getTimelineStart,
   getTimelineSuccess,
-  getCurrentUserPostsFailure,
-  getCurrentUserPostsStart,
-  getCurrentUserPostsSuccess,
   logoutPosts,
   removePost as remove,
 } from "./postSlice";
@@ -89,14 +86,11 @@ export const getTimeLine = async (dispatch) => {
 };
 
 //get all current user's posts
-export const getCurrentUserPosts = async (dispatch) => {
-  dispatch(getCurrentUserPostsStart());
+export const getCurrentUserPosts = async () => {
   try {
     const res = await privateRequest.get("/posts/all");
-    dispatch(getCurrentUserPostsSuccess(res.data));
-  } catch (error) {
-    dispatch(getCurrentUserPostsFailure());
-  }
+    return res.data;
+  } catch (error) {}
 };
 
 export const getProfileUserPosts = async (userId, setPosts) => {

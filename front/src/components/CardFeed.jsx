@@ -8,6 +8,7 @@ import {
   like as likePost,
   removePost,
 } from "redux/apiCalls";
+import { like as likeRedux } from "redux/postSlice";
 import { addCommentPost } from "redux/postSlice";
 import Comment from "./Comment";
 import Dropdown from "./Dropdown";
@@ -19,33 +20,35 @@ export default function CardFeed({ post }) {
 
   /*STATES*/
   const [commentsActive, setCommentsActive] = useState(false);
-  const [like, setLike] = useState(post.likes.includes(currentUser?._id));
+  const [like, setLike] = useState(post?.likes.includes(currentUser?._id));
   const [loading, setLoading] = useState(false);
-  const [likeCount, setLikeCount] = useState(post.likes.length);
+  const [likeCount, setLikeCount] = useState(post?.likes?.length ?? 0);
   const [userPost, setUserPost] = useState({});
   const [comment, setComment] = useState("");
 
   /*UTILS*/
-  const date = new Date(post.createdAt).toLocaleDateString("fr-FR");
+  const date = new Date(post?.createdAt).toLocaleDateString("fr-FR");
   const dispatch = useDispatch();
 
   /*EFFECTS*/
   useEffect(() => {
-    setLike(post.likes.includes(currentUser?.user._id));
-  }, [currentUser?.user._id, post.likes]);
+    setLike(post?.likes.includes(currentUser?.user._id));
+  }, [currentUser?.user._id, post?.likes]);
 
   useEffect(() => {
-    getUser(post.userId, setUserPost);
-  }, [post.userId]);
+    getUser(post?.userId, setUserPost);
+  }, [post?.userId]);
 
   /*FUNCTIONS*/
   const handleLike = async () => {
     try {
       setLike((prev) => (prev = !prev));
+
+      dispatch(likeRedux({ id: post._id, userId: currentUser?.user._id }));
       setLikeCount((prev) => {
         return like ? prev - 1 : prev + 1;
       });
-      await likePost(currentUser?.user._id, post._id);
+      await likePost(currentUser?.user._id, post?._id);
     } catch (error) {
       throw error;
     }
@@ -53,10 +56,10 @@ export default function CardFeed({ post }) {
   const handleComment = async () => {
     try {
       setLoading(true);
-      await addComment(comment, post._id, currentUser?.user._id, setComment);
+      await addComment(comment, post?._id, currentUser?.user._id, setComment);
       dispatch(
         addCommentPost({
-          id: post._id,
+          id: post?._id,
           comment: { comment: comment, userId: currentUser?.user._id },
         })
       );
@@ -82,7 +85,7 @@ export default function CardFeed({ post }) {
   const deletePost = async () => {
     try {
       setLoading(true);
-      await removePost(dispatch, post._id, currentUser?.user?._id);
+      await removePost(dispatch, post?._id, currentUser?.user?._id);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -103,7 +106,7 @@ export default function CardFeed({ post }) {
 
   const populateMenuDropdown = () => {
     return menusDropdown.filter((item) => {
-      if (post.userId !== currentUser?.user?._id)
+      if (post?.userId !== currentUser?.user?._id)
         return item.tag !== "removePost";
       return item;
     });
@@ -136,10 +139,10 @@ export default function CardFeed({ post }) {
       </div>
       {/* content */}
       <div className="flex flex-col mt-2">
-        <p className="mb-2 text-blue-900">{post.content}</p>
-        {post.notePicture && (
+        <p className="mb-2 text-blue-900">{post?.content}</p>
+        {post?.notePicture && (
           <img
-            src={post.notePicture || ""}
+            src={post?.notePicture || ""}
             alt=""
             className="w-full h-96 object-cover rounded-lg"
           />
@@ -162,7 +165,7 @@ export default function CardFeed({ post }) {
             onClick={() => setCommentsActive((prev) => (prev = !prev))}
           >
             <CommentOutlined className="text-gray-500" fontSize="large" />
-            <span className="text-gray-500 ml-1">{post.comments.length}</span>
+            <span className="text-gray-500 ml-1">{post?.comments?.length}</span>
           </button>
         </div>
         {commentsActive && (
@@ -198,7 +201,7 @@ export default function CardFeed({ post }) {
           {commentsActive && (
             <div className="flex">
               <div className="flex flex-col w-full">
-                {post.comments.map((comment, key) => (
+                {post?.comments?.map((comment, key) => (
                   <Comment item={comment} userPost={userPost} key={key} />
                 ))}
               </div>

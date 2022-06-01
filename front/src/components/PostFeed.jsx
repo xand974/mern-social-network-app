@@ -8,30 +8,36 @@ export default function PostFeed() {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [newPost, setNewPost] = useState("");
-  const [image, setImage] = useState(undefined);
+  const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [preview, setPreview] = useState("");
 
-  const getImgURL = async () => {
-    if (!image) return "";
-    return URL.createObjectURL(image);
+  const getImgURL = (val) => {
+    return !image ? URL.createObjectURL(val) : URL.createObjectURL(image);
+  };
+
+  const handleImage = (e) => {
+    setLoading(true);
+    const img = getImgURL(e.target.files[0]);
+    setImage(img);
+    setPreview(img);
+    setLoading(false);
   };
 
   const handleClick = async () => {
     try {
-      const imgURL = await getImgURL();
+      const post = {
+        content: newPost,
+        userId: currentUser?.user?._id,
+      };
+
+      if (image.length > 0) post.notePicture = image;
 
       setLoading(true);
-      await createPost(
-        {
-          content: newPost,
-          userId: currentUser?.user?._id,
-          notePicture: imgURL,
-        },
-        dispatch
-      );
+      await createPost({ ...post }, dispatch);
       setNewPost("");
-      setImage(undefined);
-
+      setImage("");
+      setPreview("");
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -60,15 +66,24 @@ export default function PostFeed() {
           onChange={(e) => setNewPost(e.target.value)}
         />
 
-        <div className="mx-2">
+        <div className="mx-2 flex items-center">
+          {preview.length > 0 && (
+            <img
+              src={preview || ""}
+              className="w-10 h-10 mr-2 object-cover rounded-md"
+              alt=""
+            />
+          )}
           <label
             htmlFor="img"
             className="bg-blue-400 text-white px-5 py-2 flex items-center rounded-lg cursor-pointer"
           >
             <ImageOutlined />
           </label>
+
           <input
-            onChange={(e) => setImage(e.target.files[0])}
+            accept="image/apng, image/avif, image/gif, image/jpeg, image/png, image/svg+xml, image/webp"
+            onChange={(e) => handleImage(e)}
             type="file"
             id="img"
             className="hidden"

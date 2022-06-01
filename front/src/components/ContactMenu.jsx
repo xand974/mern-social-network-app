@@ -23,10 +23,13 @@ export default function ContactMenu({ friends }) {
   const openDropdown = async (tag, setActive) => {
     switch (tag) {
       case "sendMessage":
+        console.log("sent");
         break;
       case "deleteFriend":
+        console.log("deleted");
         break;
       case "goToProfile":
+        console.log("profile");
         break;
       default:
         break;
@@ -73,7 +76,7 @@ export default function ContactMenu({ friends }) {
               <p className="text-white font-bold">{friend.notification}</p>
             </div>
           ) : (
-            <Dropdown menus={menusDropdown} handleClick={openDropdown} />
+            <Dropdown menus={menusDropdown} handleDropdown={openDropdown} />
           )}
         </div>
       ))}

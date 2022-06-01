@@ -4,6 +4,7 @@ import "../styles/dropdown.css";
 
 export default function Dropdown({ menus = [], handleDropdown }) {
   const [active, setActive] = useState(false);
+
   return (
     <div className=" relative flex items-center justify-center">
       <button
@@ -19,7 +20,7 @@ export default function Dropdown({ menus = [], handleDropdown }) {
         {menus.map((item, index) => (
           <button
             key={index}
-            onClick={() => handleDropdown(item.tag, setActive)}
+            onClick={() => handleDropdown(item?.tag, setActive)}
           >
             <span>{item.text}</span>
           </button>
